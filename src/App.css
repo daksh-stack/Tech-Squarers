@@ -17,6 +17,16 @@
   }
 }
 
+/* make small responsive tweaks to hero and center layout */
+.hero {
+  padding-top: 28px;
+  padding-bottom: 28px;
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.8rem; }
+}
+
 .hero {
   position: relative;
 

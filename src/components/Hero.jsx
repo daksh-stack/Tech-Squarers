@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import HeroBackground from "./HeroBackground.jsx";
-// import Phoenix from './Phoenix.jsx';
+import NeuralCanvas from './NeuralCanvas.jsx'
+import Stats from './Stats.jsx'
+
 
 export default function Hero() {
   const rootRef = useRef(null)
@@ -48,50 +50,44 @@ export default function Hero() {
   }, [])
 
   return (
-    <section ref={rootRef} className="relative top-10 flex min-h-screen items-center justify-center px-1" id="home">
+    <section ref={rootRef} className="relative pt-32 -translate-y-20 sm:pt-40 md:pt-48 flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8" id="home">
       <HeroBackground />
-      {/* <Phoenix /> */}
+      
 
       <div className="absolute inset-0 bg-black/30 hero-overlay z-0 pointer-events-none" />
 
-      <div className="relative z-30 max-w-5xl text-center px-4">
-        <div className="mb-6 flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-zinc-300">Early Access · Beta</span>
-        </div>
+      <div className="relative z-30 w-full max-w-7xl px-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-6">
+          <div className="md:col-span-6 lg:col-span-6 text-left">
+            {/* <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[rgba(255,255,255,0.03)] px-4 py-2 text-sm text-zinc-300"></div> */}
 
-        <h1 ref={titleRef} className="text-6xl font-extrabold leading-tight text-white md:text-8xl tracking-tight">
-          Build The Future
-          <br />
-          With Intelligent
-          <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-            {' '}AI Systems
-          </span>
-        </h1>
+            <h1 ref={titleRef} className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white tracking-tight">
+              Tech
+              <br />
+              Squarers
+            </h1>
 
-        <p ref={copyRef} className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
-          Deploy scalable AI solutions, automate workflows,
-          and transform ideas into intelligent products with
-          a modern developer-first platform.
-        </p>
+            <p ref={copyRef} className="mt-6 max-w-2xl text-lg text-zinc-400">
+              The future of engineering education is not a course. It is not a video library. It is a living, adaptive, AI-native ecosystem that continuously evolves with the engineer — transforming learners into production-grade builders who think, ship, and scale at the highest level.
+            </p>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <button
-            ref={el => ctasRef.current[0] = el}
-            className="rounded-2xl px-7 py-3 font-semibold transition transform shadow-lg"
-            style={{ background: 'linear-gradient(90deg,#7c3aed,#06b6d4)', color: '#061025' }}
-            aria-label="Get started with Tech-Squarers"
-          >
-            Get Started
-          </button>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <button ref={el => ctasRef.current[0] = el} className="rounded-full px-6 py-3 font-semibold btn-glow" style={{ background: 'linear-gradient(90deg,#00f0ff,#7c3aed)', color: '#021021' }}>Start Building Free</button>
 
-          <a
-            ref={el => ctasRef.current[1] = el}
-            href="#features"
-            className="rounded-2xl border border-white/10 bg-white/5 px-7 py-3 text-white backdrop-blur-xl transition transform"
-            aria-label="Explore offerings"
-          >
-            Explore
-          </a>
+              <button ref={el => ctasRef.current[1] = el} className="rounded-full px-5 py-3 border border-white/8 text-sm text-white/90">Watch the Vision</button>
+
+              <a ref={el => ctasRef.current[2] = el} href="#contact" className="rounded-full px-5 py-3 text-sm font-medium" style={{ border: '1px solid rgba(255,255,255,0.06)', background: 'transparent' }}>Book a Demo</a>
+            </div>
+
+            <div className="mt-8 flex gap-6">
+              <Stats />
+            </div>
+          </div>
+          <div className="md:col-span-6 lg:col-span-6 order-first md:order-last h-[320px] sm:h-[420px] md:h-[540px] rounded-xl overflow-hidden">
+            <div className="w-full h-full bg-black/20 rounded-xl ">
+              <NeuralCanvas />
+            </div>
+          </div>
         </div>
       </div>
     </section>

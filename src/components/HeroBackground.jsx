@@ -37,19 +37,19 @@ export default function HeroBackground() {
     <div ref={containerRef} className="absolute inset-0 overflow-hidden z-0">
       {/* Aurora Blob 1 */}
       <div
-        className="absolute left-[6%] top-[12%] h-[26rem] w-[26rem] rounded-full bg-violet-500/60 blur-[120px]"
+        className="absolute left-[6%] top-[12%] h-[26rem] w-[26rem] rounded-full bg-violet-500/60 blur-[120px] sm:left-[4%] sm:h-[22rem] sm:w-[22rem] md:h-[24rem] md:w-[24rem]"
         style={{ transform: transformFor(0.9), transition: 'transform 0.6s cubic-bezier(0.2,0.8,0.2,1)' }}
       />
 
       {/* Aurora Blob 2 */}
       <div
-        className="absolute right-[8%] top-[8%] h-[22rem] w-[22rem] rounded-full bg-cyan-500/50 blur-[120px]"
+        className="absolute right-[8%] top-[8%] h-[22rem] w-[22rem] rounded-full bg-cyan-500/50 blur-[120px] sm:h-[18rem] sm:w-[18rem] md:h-[20rem] md:w-[20rem]"
         style={{ transform: transformFor(0.6), transition: 'transform 0.7s cubic-bezier(0.2,0.8,0.2,1)' }}
       />
 
       {/* Aurora Blob 3 */}
       <div
-        className="absolute bottom-[4%] left-[30%] h-[34rem] w-[34rem] rounded-full bg-fuchsia-500/35 blur-[150px]"
+        className="absolute bottom-[4%] left-[30%] h-[34rem] w-[34rem] rounded-full bg-fuchsia-500/35 blur-[150px] sm:left-[20%] sm:h-[24rem] sm:w-[24rem] md:h-[30rem] md:w-[30rem]"
         style={{ transform: transformFor(0.3), transition: 'transform 0.9s cubic-bezier(0.2,0.8,0.2,1)' }}
       />
 
