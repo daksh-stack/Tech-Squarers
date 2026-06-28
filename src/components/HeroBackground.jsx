@@ -10,7 +10,7 @@ export default function HeroBackground() {
 
     const handleMove = (e) => {
       const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
+      const x = (e.clientX - rect.left) / rect.width; // i have sommthing soemthing for some reason
       const y = (e.clientY - rect.top) / rect.height;
       setMouse({ x, y });
     };

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import HeroBackground from "./HeroBackground.jsx";
-import NeuralCanvas from './NeuralCanvas.jsx'
+import MockIDE from './MockIDE.jsx'
 import Stats from './Stats.jsx'
 
 
@@ -72,9 +72,9 @@ export default function Hero() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <button ref={el => ctasRef.current[0] = el} className="rounded-full px-6 py-3 font-semibold btn-glow" style={{ background: 'linear-gradient(90deg,#00f0ff,#7c3aed)', color: '#021021' }}>Start Building Free</button>
+              <button ref={el => ctasRef.current[0] = el} className="rounded-full px-6 py-3 font-semibold btn-glow" style={{ background: 'linear-gradient(90deg,#00f0ff,#7c3aed)', color: '#021021' }}>Watch the Vision</button>
 
-              <button ref={el => ctasRef.current[1] = el} className="rounded-full px-5 py-3 border border-white/8 text-sm text-white/90">Watch the Vision</button>
+              {/* <button ref={el => ctasRef.current[1] = el} className="rounded-full px-5 py-3 border border-white/8 text-sm text-white/90">Watch the Vision</button> */}
 
               <a ref={el => ctasRef.current[2] = el} href="#contact" className="rounded-full px-5 py-3 text-sm font-medium" style={{ border: '1px solid rgba(255,255,255,0.06)', background: 'transparent' }}>Book a Demo</a>
             </div>
@@ -83,9 +83,9 @@ export default function Hero() {
               <Stats />
             </div>
           </div>
-          <div className="md:col-span-6 lg:col-span-6 order-first md:order-last h-[320px] sm:h-[420px] md:h-[540px] rounded-xl overflow-hidden">
-            <div className="w-full h-full bg-black/20 rounded-xl ">
-              <NeuralCanvas />
+          <div className="md:col-span-6 lg:col-span-6 order-first md:order-last flex items-center justify-center">
+            <div className="w-full max-w-lg md:max-w-none">
+              <MockIDE />
             </div>
           </div>
         </div>

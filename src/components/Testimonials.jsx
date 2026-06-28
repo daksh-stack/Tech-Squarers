@@ -33,19 +33,19 @@ export default function Testimonials() {
         <p className="mt-4 text-zinc-400 max-w-2xl mx-auto">Real stories from learners who levelled up with Tech-Squarers.</p>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="test-card rounded-2xl bg-white/3 p-6 text-left" style={{ boxShadow: '0 12px 30px rgba(2,6,23,0.45)' }}>
-            <p className="text-zinc-300">“The mentorship and projects transformed my portfolio — I got my dream job.”</p>
-            <div className="mt-4 text-sm text-zinc-400">— Aisha, Frontend Engineer</div>
+          <div className="test-card rounded-2xl bg-white/[0.01] border border-white/5 p-6 text-left" style={{ boxShadow: '0 12px 30px rgba(2,6,23,0.45)' }}>
+            <p className="text-zinc-300 text-xs leading-relaxed">“We built an LSM storage engine from scratch and got our PRs merged into upstream database repos. Pushing systems boundaries is on a different level.”</p>
+            <div className="mt-4 text-xs font-semibold text-cyan-400">— Aisha, Systems Maintainer</div>
           </div>
 
-          <div className="test-card rounded-2xl bg-white/3 p-6 text-left" style={{ boxShadow: '0 12px 30px rgba(2,6,23,0.45)' }}>
-            <p className="text-zinc-300">“Hands-on. Practical. The interview prep was the difference-maker.”</p>
-            <div className="mt-4 text-sm text-zinc-400">— Carlos, Software Developer</div>
+          <div className="test-card rounded-2xl bg-white/[0.01] border border-white/5 p-6 text-left" style={{ boxShadow: '0 12px 30px rgba(2,6,23,0.45)' }}>
+            <p className="text-zinc-300 text-xs leading-relaxed">“Tech-Squarers didn’t train me to write CRUD endpoints. I designed my custom VM compiler here, which ultimately incubated my pre-seed dev-tool startup.”</p>
+            <div className="mt-4 text-xs font-semibold text-cyan-400">— Carlos, Founder @ CacheFlow</div>
           </div>
 
-          <div className="test-card rounded-2xl bg-white/3 p-6 text-left" style={{ boxShadow: '0 12px 30px rgba(2,6,23,0.45)' }}>
-            <p className="text-zinc-300">“The community and project reviews accelerated my learning curve.”</p>
-            <div className="mt-4 text-sm text-zinc-400">— Priya, Systems Engineer</div>
+          <div className="test-card rounded-2xl bg-white/[0.01] border border-white/5 p-6 text-left" style={{ boxShadow: '0 12px 30px rgba(2,6,23,0.45)' }}>
+            <p className="text-zinc-300 text-xs leading-relaxed">“The code reviews here are brutal but excellent. Discussing work-stealing schedulers and lock-free thread queues saved me months of systems engineering study.”</p>
+            <div className="mt-4 text-xs font-semibold text-cyan-400">— Priya, Systems Lead</div>
           </div>
         </div>
       </div>

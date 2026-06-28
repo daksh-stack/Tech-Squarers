@@ -37,18 +37,27 @@ export default function Stats() {
   return (
     <div ref={ref} className="mt-12 mb-8 flex flex-col sm:flex-row items-center justify-start gap-8 sm:gap-12 md:gap-16 w-full">
       <div className="stat text-center sm:text-left">
-        <div className="stat-number text-3xl md:text-4xl font-bold text-white" data-value="73">0</div>
-        <div className="text-sm text-zinc-400 mt-2">% of engineers roles changed</div>
+        <div className="flex items-baseline justify-center sm:justify-start">
+          <span className="stat-number text-3xl md:text-4xl font-extrabold text-white" data-value="3">0</span>
+          <span className="text-xl font-bold text-cyan-400">+</span>
+        </div>
+        <div className="text-xs text-zinc-400 mt-2">Systems Engines Shipped</div>
       </div>
 
       <div className="stat text-center sm:text-left">
-        <div className="stat-number text-3xl md:text-4xl font-bold text-white" data-value="320">0</div>
-        <div className="text-sm text-zinc-400 mt-2">B USD market opportunity</div>
+        <div className="flex items-baseline justify-center sm:justify-start">
+          <span className="stat-number text-3xl md:text-4xl font-extrabold text-white" data-value="100">0</span>
+          <span className="text-xl font-bold text-cyan-400">%</span>
+        </div>
+        <div className="text-xs text-zinc-400 mt-2">OSS Upstream Contributions</div>
       </div>
 
       <div className="stat text-center sm:text-left">
-        <div className="stat-number text-3xl md:text-4xl font-bold text-white" data-value="4">0</div>
-        <div className="text-sm text-zinc-400 mt-2">x faster adoption with AI</div>
+        <div className="flex items-baseline justify-center sm:justify-start">
+          <span className="stat-number text-3xl md:text-4xl font-extrabold text-white" data-value="10">0</span>
+          <span className="text-xl font-bold text-cyan-400">K+</span>
+        </div>
+        <div className="text-xs text-zinc-400 mt-2">Req/Sec Engine Throughput</div>
       </div>
     </div>
   )

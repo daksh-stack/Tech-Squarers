@@ -60,8 +60,10 @@ export default function Navbar() {
   const navLinks = [
     { href: "#home", label: "Home" },
     { href: "#features", label: "Features" },
+    { href: "#curriculum", label: "Curriculum" },
     { href: "#how", label: "How it Works" },
     { href: "#pricing", label: "Pricing" },
+    { href: "#faq", label: "FAQ" },
   ];
 
   return (
@@ -183,6 +185,7 @@ export default function Navbar() {
           {/* Right Side */}
           <div className="flex items-center gap-3">
             <button
+              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               className="
                 hidden
                 lg:block
@@ -203,6 +206,7 @@ export default function Navbar() {
             </button>
 
             <button
+              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               className="
                 hidden
                 sm:flex
@@ -311,6 +315,10 @@ export default function Navbar() {
 
             <div className="mt-4 flex flex-col gap-3">
               <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="
                   rounded-2xl
                   border
@@ -325,6 +333,10 @@ export default function Navbar() {
               </button>
 
               <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="
                   rounded-2xl
                   bg-gradient-to-r
