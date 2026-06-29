@@ -11,9 +11,9 @@ export default function Footer() {
         <div className="flex gap-6 text-xs text-zinc-400">
           <a href="#home" className="hover:text-cyan-400 transition-colors duration-300">Back to Top</a>
           <span>•</span>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition-colors duration-300">GitHub</a>
-          <span>•</span>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition-colors duration-300">LinkedIn</a>
+          {/* <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition-colors duration-300">GitHub</a>
+          <span>•</span> */}
+          <a href="https://www.linkedin.com/company/techsquarers/" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition-colors duration-300">LinkedIn</a>
         </div>
       </div>
     </footer>

@@ -122,7 +122,7 @@ export default function Pricing() {
               <div>
                 <a
                   href="#contact"
-                  onClick={handleScrollToContact}
+                  onClick={() => window.location.href = 'YOUR_GOOGLE_FORM_LINK_HERE'}
                   className={`block w-full py-3.5 text-center text-xs font-semibold rounded-xl transition-all duration-300 ${
                     p.popular
                       ? "bg-gradient-to-r from-cyan-400 to-violet-500 text-slate-950 font-bold hover:scale-103 hover:shadow-lg hover:shadow-cyan-500/10"
