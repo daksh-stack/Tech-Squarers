@@ -64,7 +64,7 @@ export default function Pricing() {
       <div className="mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="numbered-heading mb-12 text-left">
-          <div className="index">04</div>
+          <div className="index">03</div>
           <h2 className="title">COHORT PATHS — Invest in System Leadership</h2>
         </div>
 

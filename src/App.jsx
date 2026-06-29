@@ -20,9 +20,9 @@ function App() {
       <main>
         <Problem />
         <Features />
-        <Curriculum />
-        <HowItWorks />
-        <Flywheel />
+        {/* <Curriculum /> */}
+        {/* <HowItWorks /> */}
+        {/* <Flywheel /> */}
         <Pricing />
         <Testimonials />
         <FAQ />

@@ -1,358 +1,136 @@
-import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import React, { useEffect, useState } from "react";
+import {
+  Home,
+  Cpu,
+  BookOpen,
+  Compass,
+  Tag,
+  HelpCircle,
+  MessageSquare,
+} from "lucide-react";
+import logoImg from '../assets/logo.png';
 
 export default function Navbar() {
-  const navRef = useRef(null);
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    if (!navRef.current) return;
-
-    const prefersReduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReduce) return;
-
-    const tl = gsap.fromTo(
-      navRef.current,
-      {
-        y: -30,
-        opacity: 0,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power3.out",
-      }
-    );
-
-    return () => tl.kill();
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setMenuOpen(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, [menuOpen]);
+  const [activeSection, setActiveSection] = useState("home");
 
   const navLinks = [
-    { href: "#home", label: "Home" },
-    { href: "#features", label: "Features" },
-    { href: "#curriculum", label: "Curriculum" },
-    { href: "#how", label: "How it Works" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#faq", label: "FAQ" },
+    { id: "home", label: "Home", icon: Home, href: "#home" },
+    { id: "features", label: "Features", icon: Cpu, href: "#features" },
+    { id: "pricing", label: "Pricing & Cohorts", icon: Tag, href: "#pricing" },
+    { id: "faq", label: "FAQ", icon: HelpCircle, href: "#faq" },
+    {
+      id: "contact",
+      label: "Book Demo",
+      icon: MessageSquare,
+      href: "#contact",
+    },
   ];
 
+  useEffect(() => {
+    const sections = [
+      "home",
+      "features",
+      "pricing",
+      "faq",
+      "contact",
+    ];
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "-40% 0px -40% 0px", // triggers when section is near viewport center
+      threshold: 0,
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions,
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
+      });
+    };
+  }, []);
+
+  const handleScroll = (e, href) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div
-      ref={navRef}
-      className="fixed inset-x-0 top-6 z-50 flex justify-center px-4"
-    >
-      <nav
-        className={`
-          relative
-          w-full
-          max-w-5xl
-          rounded-full
-          border
-          backdrop-blur-3xl
-          transition-all
-          duration-500
-          ${
-            scrolled
-              ? "border-cyan-500/20 bg-black/50 shadow-[0_10px_40px_rgba(6,182,212,0.15)]"
-              : "border-white/10 bg-white/[0.04]"
-          }
-        `}
-      >
-        <div className="relative flex items-center justify-between px-6 py-2">
-          {/* Logo */}
-          <a href="#home" className="flex items-center gap-3">
-            <div
-              className="
-                relative
-                flex
-                h-12
-                w-12
-                items-center
-                justify-center
-                rounded-2xl
-                bg-gradient-to-br
-                from-cyan-400
-                via-sky-500
-                to-violet-500
-                shadow-lg
-                shadow-cyan-500/20
-              "
-            >
-              <span className="font-bold text-white">TS</span>
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex justify-center w-auto max-w-[95vw]">
+      <nav className="flex items-center gap-1.5 md:gap-3 px-3.5 py-2.5 bg-slate-950/65 border border-white/10 backdrop-blur-3xl rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.6)] shadow-cyan-500/5 transition-all duration-300">
+        {/* Miniature Tech-Squarers Logo */}
+        <a
+          href="#home"
+          onClick={(e) => handleScroll(e, "#home")}
+          className="flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-violet-500 shadow-lg shadow-cyan-500/10 hover:scale-105 active:scale-95 transition-transform duration-200 overflow-hidden p-1"
+        >
+          <img
+            src={logoImg}
+            alt="Logo"
+            className="w-full h-full object-contain rounded-xl"
+          />
+        </a>
 
-              <div
-                className="
-                  absolute
-                  inset-0
-                  -z-10
-                  rounded-2xl
-                  bg-cyan-400/40
-                  blur-xl
-                "
-              />
-            </div>
+        {/* Divider */}
+        <div className="w-[1.5px] h-6 bg-white/10 mx-0.5" />
 
-            <div>
-              <div className="font-semibold text-white">
-                Tech-Squarers
-              </div>
+        {/* Navigation Icons list */}
+        <div className="flex items-center gap-1 md:gap-2">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            const isActive = activeSection === link.id;
 
-              <div className="text-xs text-zinc-400">
-                AI-native learning OS
-              </div>
-            </div>
-          </a>
-
-          {/* Desktop Nav */}
-          <div
-            className="
-              absolute
-              left-1/2
-              hidden
-              -translate-x-1/2
-              md:flex
-              items-center
-              gap-8
-            "
-          >
-            {navLinks.map((link) => (
+            return (
               <a
-                key={link.href}
+                key={link.id}
                 href={link.href}
-                className="
-                  group
-                  relative
-                  text-sm
-                  text-zinc-400
-                  transition-colors
-                  duration-300
-                  hover:text-white
-                "
+                onClick={(e) => handleScroll(e, link.href)}
+                className={`group relative flex items-center justify-center p-2.5 rounded-xl transition-all duration-300 hover:bg-white/5 ${
+                  isActive
+                    ? "text-cyan-400 bg-white/[0.03]"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+                style={{ contentVisibility: "auto" }}
               >
-                {link.label}
+                {/* macOS Dock Hover expansion */}
+                <div className="transform transition-transform duration-300 group-hover:scale-120 group-hover:-translate-y-1.5 active:scale-95">
+                  <Icon className="w-[17px] h-[17px] md:w-[19px] md:h-[19px]" />
+                </div>
 
-                <span
-                  className="
-                    absolute
-                    left-1/2
-                    bottom-[-6px]
-                    h-[2px]
-                    w-0
-                    -translate-x-1/2
-                    rounded-full
-                    bg-gradient-to-r
-                    from-cyan-400
-                    to-violet-500
-                    transition-all
-                    duration-300
-                    group-hover:w-full
-                  "
-                />
-              </a>
-            ))}
-          </div>
-
-          {/* Right Side */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-              className="
-                hidden
-                lg:block
-                rounded-full
-                border
-                border-white/10
-                bg-white/5
-                px-5
-                py-2.5
-                text-sm
-                font-medium
-                text-white
-                transition
-                hover:bg-white/10
-              "
-            >
-              Request Demo
-            </button>
-
-            <button
-              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-              className="
-                hidden
-                sm:flex
-                items-center
-                gap-2
-                rounded-full
-                bg-gradient-to-r
-                from-cyan-400
-                to-violet-500
-                px-5
-                py-2.5
-                text-sm
-                font-semibold
-                text-slate-950
-                transition-all
-                duration-300
-                hover:scale-105
-                hover:shadow-lg
-                hover:shadow-cyan-500/20
-              "
-            >
-              Get Started ✨
-            </button>
-
-            {/* Mobile Toggle */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="
-                flex
-                h-11
-                w-11
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-white/10
-                bg-white/5
-                text-white
-                md:hidden
-              "
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="h-5 w-5 stroke-current"
-              >
-                {menuOpen ? (
-                  <path
-                    d="M6 18L18 6M6 6l12 12"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                ) : (
-                  <>
-                    <path
-                      d="M4 8h16"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M4 16h16"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                  </>
+                {/* macOS Active Dot */}
+                {isActive && (
+                  <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.8)] glow-pulse" />
                 )}
-              </svg>
-            </button>
-          </div>
-        </div>
 
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div
-            className="
-              mx-3
-              mb-3
-              rounded-3xl
-              border
-              border-white/10
-              bg-black/80
-              p-4
-              backdrop-blur-xl
-              md:hidden
-            "
-          >
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="
-                    rounded-2xl
-                    px-4
-                    py-3
-                    text-zinc-200
-                    transition
-                    hover:bg-white/10
-                  "
-                >
+                {/* Tooltip */}
+                <span className="absolute -top-10 scale-0 group-hover:scale-100 transition-all duration-200 px-2 py-1 text-[9px] font-sans font-semibold rounded bg-slate-900 border border-white/10 text-white whitespace-nowrap shadow-md pointer-events-none select-none">
                   {link.label}
-                </a>
-              ))}
-            </div>
-
-            <div className="mt-4 flex flex-col gap-3">
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="
-                  rounded-2xl
-                  border
-                  border-white/10
-                  bg-white/5
-                  px-4
-                  py-3
-                  text-white
-                "
-              >
-                Request Demo
-              </button>
-
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="
-                  rounded-2xl
-                  bg-gradient-to-r
-                  from-cyan-400
-                  to-violet-500
-                  px-4
-                  py-3
-                  font-semibold
-                  text-slate-950
-                "
-              >
-                Get Started
-              </button>
-            </div>
-          </div>
-        )}
+                </span>
+              </a>
+            );
+          })}
+        </div>
       </nav>
     </div>
   );

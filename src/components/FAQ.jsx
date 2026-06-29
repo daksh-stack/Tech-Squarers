@@ -35,7 +35,7 @@ export default function FAQ() {
       <div className="mx-auto max-w-4xl px-6">
         {/* Title */}
         <div className="numbered-heading mb-12">
-          <div className="index">06</div>
+          <div className="index">04</div>
           <h2 className="title">FAQ — Alignment & Expectations</h2>
         </div>
 

@@ -50,7 +50,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section ref={rootRef} className="relative pt-32 -translate-y-20 sm:pt-40 md:pt-48 flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8" id="home">
+    <section ref={rootRef} className="relative py-16 md:py-24 flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8" id="home">
       <HeroBackground />
       
 
