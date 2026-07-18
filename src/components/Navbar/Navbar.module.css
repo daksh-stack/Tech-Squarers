@@ -1,0 +1,93 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.menuIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-brand-dark);
+  transition: color 0.3s ease;
+}
+
+.menuText {
+  font-weight: 500;
+  font-size: 1.125rem;
+  color: var(--color-brand-dark);
+  transition: color 0.3s ease;
+}
+
+.menuItem:hover .menuIcon,
+.menuItem:hover .menuText {
+  color: var(--color-brand-orange);
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logoContainer:hover {
+  transform: scale(1.05);
+}
+
+.logoText {
+  font-size: 2.25rem;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  display: flex;
+  position: relative;
+}
+
+.logoT {
+  color: var(--color-brand-orange);
+  text-shadow: 2px 2px 4px rgba(255,107,0,0.3);
+}
+
+.logoS {
+  color: var(--color-brand-dark);
+  margin-left: -0.25rem;
+}
+
+.logoSubtitle {
+  font-size: 0.75rem;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  margin-top: 0.25rem;
+  color: var(--color-brand-dark);
+}
+
+.enrollButton {
+  padding: 0.625rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-brand-dark);
+  color: var(--color-brand-dark);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.enrollButton:hover {
+  background-color: var(--color-brand-dark);
+  color: var(--color-brand-bg);
+}
+
+.enrollButton:active {
+  transform: scale(0.95);
+}
