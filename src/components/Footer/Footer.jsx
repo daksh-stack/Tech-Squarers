@@ -1,119 +1,94 @@
 import React from 'react';
-import { ArrowRight, Mail, Phone, MapPin } from 'lucide-react';
+import { Zap, MessageSquare, Mail, Heart } from 'lucide-react';
 
-export default function Footer({ onOpenQuote }) {
+const DISCORD_INVITE_URL = "https://discord.gg/techsquarers";
+
+export default function Footer() {
   return (
-    <footer style={{ background: '#090D16', color: '#ffffff', paddingTop: '5rem', paddingBottom: '3rem', borderTop: '1px solid #1E293B', position: 'relative' }}>
+    <footer id="footer" style={{ background: '#050505', color: '#ffffff', paddingTop: '4.5rem', paddingBottom: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.08)', position: 'relative' }}>
       <div className="container">
         
-        {/* Pre-footer Callout Banner */}
-        <div style={{
-          background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          borderRadius: '1.5rem',
-          padding: '2.5rem',
-          marginBottom: '5rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '1.5rem',
-          border: '1px solid #334155'
-        }}>
-          <div>
-            <span className="font-mono text-teal" style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              Ready to start building?
-            </span>
-            <h3 className="font-heading" style={{ fontSize: '2rem', fontWeight: 800, color: '#ffffff', marginTop: '0.25rem' }}>
-              Let’s talk about your project.
-            </h3>
-            <p className="font-sans text-muted" style={{ fontSize: '0.9rem', marginTop: '0.25rem' }}>
-              No pressure, just an honest conversation about what’s possible.
-            </p>
-          </div>
-
-          <button onClick={onOpenQuote} className="btn btn-coral">
-            <span>Talk to the studio</span>
-            <ArrowRight style={{ width: '1.1rem', height: '1.1rem' }} />
-          </button>
-        </div>
-
-        {/* Links */}
-        <div className="grid-4" style={{ borderBottom: '1px solid #1E293B', paddingBottom: '3rem', marginBottom: '2rem' }}>
+        <div className="grid-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '3rem', marginBottom: '2rem' }}>
           
-          {/* Brand */}
+          {/* Col 1: Brand */}
           <div>
-            <a href="#hero" style={{ display: 'flex', itemsCenter: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-              <div className="logo-icon">
-                <svg style={{ width: '1.4rem', height: '1.4rem', fill: 'currentColor' }} viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-                </svg>
+            <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <div style={{
+                width: '2.25rem',
+                height: '2.25rem',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #9B5DE5 0%, #7B2CBF 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff'
+              }}>
+                <Zap style={{ width: '1.2rem', height: '1.2rem', fill: '#ffffff' }} />
               </div>
               <span className="font-heading" style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.25rem' }}>
-                Loro<span className="text-coral">Labs</span>
+                Tech<span className="text-purple">Squarers</span>
               </span>
             </a>
 
-            <p className="font-sans text-muted" style={{ fontSize: '0.85rem', lineHeight: 1.6 }}>
-              A design and engineering studio building custom websites, portals, and apps for businesses across APAC. Custom-built and yours to own.
+            <p className="font-sans" style={{ fontSize: '0.875rem', color: '#A3A3A3', lineHeight: 1.6, maxWidth: '18rem' }}>
+              A focused Discord-powered learning community designed for serious learners who want structured guidance, real practice, and accountable progress.
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Col 2: Navigation */}
           <div>
-            <h4 className="font-heading" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#ffffff', marginBottom: '1rem' }}>
-              Quick Links
+            <h4 className="font-heading" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#ffffff', marginBottom: '1rem' }}>
+              Navigation
             </h4>
-            <ul className="font-sans" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.875rem', color: '#94A3B8' }}>
-              <li><a href="#hero">Home</a></li>
-              <li><a href="#about">About Us</a></li>
-              <li><a href="#portfolio">Portfolio</a></li>
-              <li><a href="#pricing">Pricing &amp; Packages</a></li>
-              <li><a href="#demo">Live Demo Engine</a></li>
+            <ul className="font-sans" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.875rem', color: '#A3A3A3' }}>
+              <li><a href="#about" style={{ hover: { color: '#ffffff' } }}>About Mission</a></li>
+              <li><a href="#how-it-works">How It Works</a></li>
+              <li><a href="#features">Experience Inside</a></li>
+              <li><a href="#testimonials">Community Reviews</a></li>
             </ul>
           </div>
 
-          {/* Offerings */}
+          {/* Col 3: Community */}
           <div>
-            <h4 className="font-heading" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#ffffff', marginBottom: '1rem' }}>
-              Studio Offerings
+            <h4 className="font-heading" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#ffffff', marginBottom: '1rem' }}>
+              Community Hub
             </h4>
-            <ul className="font-sans" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.875rem', color: '#94A3B8' }}>
-              <li><a href="#services">Website Development</a></li>
-              <li><a href="#services">App Development</a></li>
-              <li><a href="#services">Systems &amp; Platforms</a></li>
-              <li><a href="#services">AI Media &amp; 3D Content</a></li>
-              <li><a href="#services">IT &amp; Architecture Consulting</a></li>
+            <ul className="font-sans" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.875rem', color: '#A3A3A3' }}>
+              <li><a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+              <li><a href="#features">Study Tracks</a></li>
+              <li><a href="#features">Mentorship Program</a></li>
+              <li><a href="#features">Code Review Sprints</a></li>
             </ul>
           </div>
 
-          {/* Contact */}
-          <div className="font-sans" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.85rem', color: '#94A3B8' }}>
-            <h4 className="font-heading" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#ffffff', marginBottom: '0.25rem' }}>
-              Contact Studio
+          {/* Col 4: Contact */}
+          <div className="font-sans" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.875rem', color: '#A3A3A3' }}>
+            <h4 className="font-heading" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#ffffff', marginBottom: '0.25rem' }}>
+              Connect
             </h4>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Mail style={{ width: '1rem', height: '1rem', color: '#F92C53' }} />
-              <a href="mailto:info@lorolabs.ai" style={{ color: '#CBD5E1' }}>info@lorolabs.ai</a>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <MessageSquare style={{ width: '1rem', height: '1rem', color: '#9B5DE5' }} />
+              <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer" style={{ color: '#E5E5E5' }}>Discord Community</a>
             </div>
-            <div style={{ display: 'flex', itemsCenter: 'center', gap: '0.5rem' }}>
-              <Phone style={{ width: '1rem', height: '1rem', color: '#F92C53' }} />
-              <a href="tel:+639602778783" style={{ color: '#CBD5E1' }}>+63 960 277 8783</a>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.75rem' }}>
-              <MapPin style={{ width: '1rem', height: '1rem', color: '#F92C53', flexShrink: 0, marginTop: '0.1rem' }} />
-              <span>Unit 111 Spark Place, Quezon City 1109, Philippines</span>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <Mail style={{ width: '1rem', height: '1rem', color: '#9B5DE5' }} />
+              <a href="mailto:hello@techsquarers.com" style={{ color: '#E5E5E5' }}>hello@techsquarers.com</a>
             </div>
           </div>
 
         </div>
 
         {/* Bottom copyright */}
-        <div className="font-mono text-muted" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', gap: '1rem' }}>
+        <div className="font-mono" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: '#6B6B6B', gap: '1rem' }}>
           <div>
-            © {new Date().getFullYear()} Loro Labs Technologies Corporation. All rights reserved.
+            © {new Date().getFullYear()} TechSquarers. All rights reserved.
           </div>
-          <div>
-            “We build with empathy, creativity, and purpose.”
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#A3A3A3' }}>
+            <Heart style={{ width: '0.85rem', height: '0.85rem', color: '#9B5DE5', fill: '#9B5DE5' }} />
+            <span>Built for serious learners.</span>
           </div>
         </div>
 

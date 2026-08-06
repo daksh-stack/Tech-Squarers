@@ -1,66 +1,45 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
+import StatsBar from './components/StatsBar/StatsBar';
 import About from './components/About/About';
-import Services from './components/Services/Services';
-import Testimonial from './components/Testimonials/Testimonial';
-import TechStack from './components/TechStack/TechStack';
-import LoroDifference from './components/LoroDifference/LoroDifference';
-import Portfolio from './components/Portfolio/Portfolio';
-import Pricing from './components/Pricing/Pricing';
-import Industries from './components/Industries/Industries';
-import LiveDemo from './components/LiveDemo/LiveDemo';
-import QuoteModal from './components/QuoteModal/QuoteModal';
+import HowItWorks from './components/HowItWorks/HowItWorks';
+import Features from './components/Features/Features';
+import Testimonials from './components/Testimonials/Testimonials';
+import FinalCTA from './components/FinalCTA/FinalCTA';
 import Footer from './components/Footer/Footer';
 
 export default function App() {
-  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
-
-  const handleOpenQuote = () => setIsQuoteOpen(true);
-  const handleCloseQuote = () => setIsQuoteOpen(false);
-
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#1E293B] font-sans selection:bg-[#F92C53] selection:text-white">
-      {/* Floating Navigation Bar */}
-      <Navbar onOpenQuote={handleOpenQuote} />
+    <div className="min-h-screen bg-[#050505] text-[#E5E5E5] font-sans selection:bg-[#9B5DE5] selection:text-white">
+      {/* 1. Sticky / Floating Header */}
+      <Navbar />
 
       <main>
-        {/* Hero Section */}
-        <Hero onOpenQuote={handleOpenQuote} />
+        {/* 2. Hero Section */}
+        <Hero />
 
-        {/* About Loro Labs */}
+        {/* 3. Stats / Social Proof Bar */}
+        <StatsBar />
+
+        {/* 4. About / Mission Section */}
         <About />
 
-        {/* Services & Capabilities (01-06) */}
-        <Services onOpenQuote={handleOpenQuote} />
+        {/* 5. How It Works Section */}
+        <HowItWorks />
 
-        {/* Client Testimonials & Live Stats */}
-        <Testimonial />
+        {/* 6. What You'll Experience Inside / Features */}
+        <Features />
 
-        {/* Production Stack Marquee & Grid */}
-        <TechStack />
+        {/* 7. What Our Community Says / Testimonials */}
+        <Testimonials />
 
-        {/* The Loro Difference */}
-        <LoroDifference />
-
-        {/* Client Portfolio Showcase */}
-        <Portfolio onOpenQuote={handleOpenQuote} />
-
-        {/* Build & Operate Pricing */}
-        <Pricing onOpenQuote={handleOpenQuote} />
-
-        {/* Industries Cloud */}
-        <Industries />
-
-        {/* Interactive Live Demo Engine */}
-        <LiveDemo onOpenQuote={handleOpenQuote} />
+        {/* 8. Final CTA Section */}
+        <FinalCTA />
       </main>
 
-      {/* Footer */}
-      <Footer onOpenQuote={handleOpenQuote} />
-
-      {/* Quote / Talk to the Studio Modal */}
-      <QuoteModal isOpen={isQuoteOpen} onClose={handleCloseQuote} />
+      {/* 9. Footer */}
+      <Footer />
     </div>
   );
 }

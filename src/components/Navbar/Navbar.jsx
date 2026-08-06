@@ -1,37 +1,47 @@
 import React, { useState } from 'react';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, MessageSquare, Menu, X, Shield, Zap } from 'lucide-react';
 
-export default function Navbar({ onOpenQuote }) {
+/* Google Form Placeholder Link */
+const GOOGLE_FORM_URL = "https://forms.gle/YOUR_FORM_LINK";
+const DISCORD_INVITE_URL = "https://discord.gg/techsquarers";
+
+export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Home', href: '#hero' },
     { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Stack', href: '#stack' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Live Demo', href: '#demo' },
+    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'Experience', href: '#features' },
+    { name: 'Community', href: '#testimonials' },
+    { name: 'Contact', href: '#footer' },
   ];
 
   return (
-    <header className="loro-header">
+    <header className="tech-header">
       <div className="container">
         <div className="nav-glass-bar">
           
           {/* Logo */}
-          <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div className="logo-icon">
-              <svg style={{ width: '1.4rem', height: '1.4rem', fill: 'currentColor' }} viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-              </svg>
+          <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: '2.5rem',
+              height: '2.5rem',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #9B5DE5 0%, #7B2CBF 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              boxShadow: '0 0 15px rgba(155, 93, 229, 0.4)'
+            }}>
+              <Zap style={{ width: '1.3rem', height: '1.3rem', fill: '#ffffff' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span className="font-heading" style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.2rem', letterSpacing: '-0.02em' }}>
-                Loro<span className="text-coral">Labs</span>
+              <span className="font-heading" style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.25rem', letterSpacing: '-0.02em' }}>
+                Tech<span className="text-purple">Squarers</span>
               </span>
-              <span className="font-mono" style={{ fontSize: '9px', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                Design Studio
+              <span className="font-mono" style={{ fontSize: '9px', color: '#A3A3A3', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                Vibranium Learning Ecosystem
               </span>
             </div>
           </a>
@@ -45,12 +55,31 @@ export default function Navbar({ onOpenQuote }) {
             ))}
           </nav>
 
-          {/* Desktop Action */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <button onClick={onOpenQuote} className="btn btn-coral">
-              <span>Talk to the studio</span>
-              <ArrowRight style={{ width: '1rem', height: '1rem' }} />
-            </button>
+          {/* Action CTAs */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {/* Google Form Link */}
+            <a
+              href={GOOGLE_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-purple"
+              style={{ padding: '0.6rem 1.25rem', fontSize: '0.85rem' }}
+            >
+              <span>Enquire Now</span>
+              <ArrowRight style={{ width: '0.9rem', height: '0.9rem' }} />
+            </a>
+
+            {/* Discord Link */}
+            <a
+              href={DISCORD_INVITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-silver"
+              style={{ padding: '0.6rem 1.1rem', fontSize: '0.85rem' }}
+            >
+              <MessageSquare style={{ width: '0.9rem', height: '0.9rem', color: '#9B5DE5' }} />
+              <span>Join Discord</span>
+            </a>
           </div>
 
         </div>
