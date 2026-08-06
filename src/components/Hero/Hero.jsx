@@ -1,117 +1,133 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import ReviewStats from '../ReviewStats/ReviewStats';
-import SocialLinks from '../SocialLinks/SocialLinks';
-import styles from './Hero.module.css';
+import { ArrowRight, Play, Zap, ShieldCheck, Sparkles } from 'lucide-react';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 70, damping: 20 } }
-};
-
-const imageVariants = {
-  hidden: { opacity: 0, scale: 0.85, rotateY: 15 },
-  visible: { 
-    opacity: 1, 
-    scale: 1, 
-    rotateY: 0,
-    transition: { type: 'spring', stiffness: 50, damping: 20, delay: 0.4 } 
-  }
-};
-
-const floatingAnimation = {
-  y: [0, -15, 0],
-  transition: {
-    duration: 6,
-    repeat: Infinity,
-    ease: "easeInOut"
-  }
-};
-
-const Hero = () => {
+export default function Hero({ onOpenQuote }) {
   return (
-    <main className={styles.heroMain}>
-      <div className={styles.heroGrid}>
-        
-        {/* Left Column */}
-        <motion.div 
-          className={styles.leftCol}
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.h1 className={styles.mainHeading} variants={itemVariants}>
-            Build.<br />
-            Train.
-          </motion.h1>
-          
-          <motion.div className={styles.descriptionBox} variants={itemVariants}>
-             <p className={styles.subHeading}>
-               Where builders train and businesses grow
-             </p>
-             <p className={styles.paragraph}>
-               TechSquarers is a tech agency and learning platform for the next generation of builders. We help businesses launch digital products, while training developers with real, hands on skills.
-             </p>
-          </motion.div>
-          
-          <motion.div className={styles.ctaContainer} variants={itemVariants}>
-             <button className={styles.ctaButton}>
-               <span>Start a project</span>
-               <div className={styles.ctaIconBox}>
-                 <ArrowUpRight strokeWidth={3} size={20} />
-               </div>
-             </button>
-          </motion.div>
+    <section id="hero" className="hero-section">
+      <div className="ambient-glow" />
 
-          <motion.div variants={itemVariants}>
-            <ReviewStats />
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <SocialLinks />
-          </motion.div>
-        </motion.div>
-
-        {/* Right Column */}
-        <div className={styles.rightCol}>
-          <motion.div 
-            className={styles.imageContainer}
-            variants={imageVariants}
-            initial="hidden"
-            animate="visible"
-          >
-             <motion.img 
-                src="/hero-image.png" 
-                alt="3D Glassmorphism cubes" 
-                className={styles.heroImage} 
-                animate={floatingAnimation}
-             />
-          </motion.div>
+      <div className="container" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
+        <div style={{ maxWidth: '52rem', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.75rem' }}>
           
-          <motion.h1 
-            className={styles.launchHeading}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ type: 'spring', stiffness: 60, damping: 20, delay: 0.8 }}
-          >
-            Launch.
-          </motion.h1>
+          {/* Top Pill Badge */}
+          <div className="badge-pill">
+            <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#F92C53' }} className="animate-pulse" />
+            <span>Design engineering for ambitious brands</span>
+            <Sparkles style={{ width: '0.9rem', height: '0.9rem', color: '#F92C53' }} />
+          </div>
+
+          {/* Title */}
+          <h1 className="hero-title font-heading">
+            Design engineering <br />
+            <span className="hero-title-gradient">for ambitious brands.</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="hero-subtitle font-sans">
+            We design and build custom websites, portals, and apps with uncompromised performance. 
+            From the Philippines to ambitious brands across Asia-Pacific.
+          </p>
+
+          {/* Tagline Badge */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.4rem 1rem',
+            borderRadius: '9999px',
+            background: '#E6FFFA',
+            color: '#0D9488',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            border: '1px solid rgba(13, 148, 136, 0.2)'
+          }}>
+            <ShieldCheck style={{ width: '1rem', height: '1rem' }} />
+            <span>Tech crafted with empathy · Purpose in every pixel</span>
+          </div>
+
+          {/* CTA Action Buttons */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem', marginTop: '0.5rem' }}>
+            <a href="#pricing" className="btn btn-coral">
+              <span>View Packages</span>
+              <ArrowRight style={{ width: '1.1rem', height: '1.1rem' }} />
+            </a>
+
+            <a href="#portfolio" className="btn btn-dark">
+              <Play style={{ width: '0.9rem', height: '0.9rem', fill: '#ffffff' }} />
+              <span>See Our Work</span>
+            </a>
+          </div>
+
         </div>
-      </div>
-    </main>
-  );
-};
 
-export default Hero;
+        {/* Hero Interactive Showcase Card */}
+        <div className="hero-mockup-box">
+          <div className="mockup-header-bar">
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div className="dot-red" />
+              <div className="dot-yellow" />
+              <div className="dot-green" />
+            </div>
+
+            <div className="font-mono text-muted" style={{ fontSize: '0.75rem', background: 'rgba(255,255,255,0.05)', padding: '0.25rem 1rem', borderRadius: '9999px' }}>
+              lorolabs.ai/demo — Live Studio Engine
+            </div>
+
+            <div className="font-mono text-teal" style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Zap style={{ width: '0.85rem', height: '0.85rem' }} />
+              99/100 Speed
+            </div>
+          </div>
+
+          {/* Showcase Image */}
+          <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', overflow: 'hidden' }}>
+            <img
+              src="/loro_hero_mockup.jpg"
+              alt="Loro Labs Engine Showcase"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+
+            {/* Overlaid Badges */}
+            <div style={{
+              position: 'absolute',
+              bottom: '1.5rem',
+              left: '1.5rem',
+              right: '1.5rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              justify: 'space-between',
+              gap: '1rem'
+            }}>
+              <div style={{
+                background: 'rgba(15, 23, 42, 0.9)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                padding: '0.65rem 1.25rem',
+                borderRadius: '1rem',
+                color: '#ffffff',
+                textAlign: 'left'
+              }}>
+                <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>Lighthouse Performance</div>
+                <div className="font-mono" style={{ fontSize: '0.875rem', fontWeight: 700, color: '#10B981' }}>0.2s Load · 100/100 SEO</div>
+              </div>
+
+              <div style={{
+                background: 'rgba(15, 23, 42, 0.9)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                padding: '0.65rem 1.25rem',
+                borderRadius: '1rem',
+                color: '#ffffff',
+                textAlign: 'left'
+              }}>
+                <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>Source Code Ownership</div>
+                <div className="font-mono" style={{ fontSize: '0.875rem', fontWeight: 700, color: '#ffffff' }}>100% Yours to keep</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
