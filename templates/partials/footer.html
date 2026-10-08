@@ -1,0 +1,142 @@
+{% load static %}
+{% comment %}
+  Closing CTA + site footer, on every page (included from base.html).
+  The photo sits behind the CTA and runs on under the white footer card, whose rounded top corners rise over
+  its lower edge (pb-28/30 on the section, -mt-24 on the card's wrapper, leaving the back-to-top arrow 16px
+  above the card on phones, 24px from md). Below sm the card is full width; from sm it has 24px side gutters
+  (narrower than the navbar's 40px from lg, so the card is wider on desktop) and a 90rem cap. The text is centred at every size.
+
+  The photo (decorative, so alt=""): a hand on a mouse beside a closed laptop on a desk, a dark city window
+  behind (the user's pick, 2026-10-01, replacing a student at a laptop; 1451 x 1084). The hand and mouse sit
+  about 0-55% across and 39-77% down, the laptop 48-100% across; the top 38% is dark, blurred window.
+  The photo fills the whole CTA area behind the text at every size (object-cover), and the text sits in the
+  middle of it (the user's call for phones, 2026-10-01, replacing a phone layout with the photo above the text):
+    below md   38% across, so the fingertips and mouse stay in frame. The 112px top padding centres the text
+               block in the part of the photo above the footer card (within 6px at 360-390px); the hand and
+               mouse sit behind and under the button.
+    from md    centred. The text sits over the dark window, with the hand and mouse below and to its left and
+               the laptop on the right. At 768px the button's left end sits over the knuckles (it has its
+               own fill).
+  Overlays: no flat tint, so the photo stays clear (the user's call, 2026-09-24, like the home hero). A soft
+  navy glow behind the text (an ellipse 1.5x the text block's width and 1.8x its height: deep-navy/75 in the
+  middle, /55 at 70%, clear at its edge), plus the fade to navy over the bottom half into the footer card.
+  Keep the glow: it was sized for the previous, brighter photo, but without it the paragraph measures only
+  3.02:1 on phones (over the lit knuckles) and 2.97:1 at 1920px (a city light behind it).
+
+  Contrast, measured on the composited pixels (photo + fade + glow), worst case behind each text line:
+    360px    heading 12.55:1, paragraph  8.65:1
+    375px    heading 12.52:1, paragraph  8.68:1
+    390px    heading 12.45:1, paragraph  8.69:1
+    768px    heading 12.38:1, paragraph 12.49:1
+    1024px   heading 12.37:1, paragraph 12.76:1
+    1280px   heading 11.88:1, paragraph 15.61:1
+    1920px   heading 15.21:1, paragraph  7.86:1
+  The heading is large text (3:1), the paragraph normal (4.5:1). Re-measure if the photo, its crop, the glow or
+  the copy change.
+
+  The CTA button opens a WhatsApp chat (number in admin > Site settings). With no number set it links to
+  the Contact page instead, so the section never ends without an action. The copy is fixed here, not in
+  admin (the user's call for marketing copy).
+
+  The round arrow goes back to the top of the page (#main, the same target as the skip link, so keyboard
+  focus moves there too). html has motion-safe:scroll-smooth in base.html, so it glides up unless the
+  visitor asks for reduced motion.
+
+  Footer card: logo and social icons on the left; Explore (the v1 pages) and Courses (from admin) on the
+  right from lg, stacked below it. Social icons come from admin and each shows only when its address is
+  filled in. Column headings are deep-navy at 70% on white, about 5.7:1.
+{% endcomment %}
+{% url 'core:contact' as contact_url %}
+<div class="bg-deep-navy">
+  {# Photo area: the CTA plus the strip the footer card overlaps (pb on the section, -mt on the card's wrapper) #}
+  <div class="relative isolate overflow-hidden">
+    <img src="{% static 'images/cta-mouse-1451.webp' %}" alt="" width="1451" height="1084" loading="lazy" decoding="async"
+         class="absolute inset-0 -z-10 size-full object-cover object-[38%_50%] md:object-center">
+    <div aria-hidden="true" class="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-linear-to-b from-transparent to-deep-navy"></div>
+
+    <section aria-labelledby="cta-title" class="pt-28 pb-28 text-center sm:px-6 md:pt-32 md:pb-30">
+      {# Same gutters and padding as the footer card below, so the text column matches the card #}
+      <div class="mx-auto max-w-[90rem] px-6 sm:px-10 lg:px-16">
+        <div class="relative mx-auto w-fit">
+          {# The glow: a soft navy ellipse behind the text only (the photo stays clear around it), strong in the middle so the white text reads over the bright wall and hoodie behind it #}
+          <div aria-hidden="true" class="pointer-events-none absolute top-1/2 left-1/2 -z-10 h-[180%] w-[150%] -translate-x-1/2 -translate-y-1/2 bg-radial-[closest-side] from-deep-navy/75 via-deep-navy/55 via-70% to-transparent"></div>
+          <h2 id="cta-title" x-data="scrollText" class="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">Have questions?</h2>
+          <p class="mx-auto mt-5 max-w-xl text-base text-balance text-white sm:text-lg">
+            Not sure which course is right for you? Our team is happy to talk it through and help you choose.
+          </p>
+          {# The button's own focus ring is vibrant-blue, too faint on this dark background; white here #}
+          <div class="mt-9 flex justify-center [&>a]:focus-visible:outline-white">
+            {% if site.whatsapp_chat_url %}
+              {% include "components/arrow-fill-button.html" with label="Chat with us on WhatsApp" url=site.whatsapp_chat_url new_tab=True %}
+            {% else %}
+              {% include "components/arrow-fill-button.html" with label="Contact us" url=contact_url %}
+            {% endif %}
+          </div>
+        </div>
+
+        <a href="#main"
+           class="mx-auto mt-16 flex size-11 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/40 backdrop-blur-md transition-colors duration-300 hover:bg-white hover:text-deep-navy focus-visible:bg-white focus-visible:text-deep-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none md:mt-36">
+          <span class="sr-only">Back to top</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="size-4">
+            <path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>
+          </svg>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <div class="relative -mt-24 sm:px-6">
+    <footer class="mx-auto max-w-[90rem] rounded-t-[2rem] bg-white px-6 pt-12 pb-8 sm:px-10 sm:pt-16 lg:px-16">
+      <div class="flex flex-col gap-12 lg:flex-row lg:justify-between">
+        <div>
+          {# Same lockup as the navbar, a size up; resize with the two values in style="" (see navbar.html) #}
+          <a href="{% url 'core:home' %}" class="focus-ring inline-flex items-center rounded-lg" style="--mark-height: 2.25rem; --wordmark-height: 0.9rem">
+            <img src="{% static 'images/logo-mark.svg' %}" alt="TechSquarers home" width="140" height="108" class="h-(--mark-height) w-auto">
+            <img src="{% static 'images/logo-wordmark.svg' %}" alt="" width="153" height="15" class="ml-[calc(var(--mark-height)*0.313)] h-(--wordmark-height) w-auto">
+          </a>
+
+          {% if site.social_links %}
+          <ul class="mt-8 flex gap-2">
+            {% for icon, label, url in site.social_links %}
+            <li>
+              <a href="{{ url }}" target="_blank" rel="noopener"
+                 class="focus-ring flex size-11 items-center justify-center rounded-full text-deep-navy transition-colors hover:bg-ice-blue hover:text-vibrant-blue">
+                <span class="sr-only">TechSquarers on {{ label }}</span>
+                {% include "components/social-icon.html" with icon=icon %}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+        <div class="grid grid-cols-2 gap-8 sm:gap-16 lg:gap-24">
+          <nav aria-labelledby="footer-explore">
+            <h2 id="footer-explore" class="text-xs font-semibold tracking-widest text-deep-navy/70 uppercase">Explore</h2>
+            <ul class="mt-4">
+              <li><a href="{% url 'core:home' %}" class="focus-ring footer-link">Home</a></li>
+              <li><a href="{% url 'core:about' %}" class="focus-ring footer-link">About</a></li>
+              <li><a href="{% url 'core:services' %}" class="focus-ring footer-link">Services</a></li>
+              <li><a href="{{ contact_url }}" class="focus-ring footer-link">Contact</a></li>
+            </ul>
+          </nav>
+
+          {% if footer_courses %}
+          <nav aria-labelledby="footer-courses">
+            <h2 id="footer-courses" class="text-xs font-semibold tracking-widest text-deep-navy/70 uppercase">Courses</h2>
+            <ul class="mt-4">
+              {% for course in footer_courses %}
+              <li><a href="{{ course.get_absolute_url }}" class="focus-ring footer-link">{{ course.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </nav>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="mt-12 border-t border-ice-blue pt-6 text-sm text-deep-navy/70">
+        &copy; {% now "Y" %} TechSquarers. All rights reserved.
+      </p>
+    </footer>
+  </div>
+</div>

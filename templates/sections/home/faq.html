@@ -1,0 +1,63 @@
+{% comment %}
+  Frequently asked questions, ported from the user's React "FrequentlyAskedQuestions" component
+  (shadcn/Radix accordion with Motion) to Alpine. Questions come from admin (FAQ model) in their admin
+  order, and the section is hidden until at least one exists.
+
+  A plain list of questions split by thin rules, in a centred column (max-w-3xl, as in the original).
+  All questions start closed and one is open at a time; clicking the open question closes it (Radix's
+  "single, collapsible"). The question underlines on hover and the chevron flips while it's open.
+
+  Built on the accordion pattern: each question is a button inside an h3, with aria-expanded and
+  aria-controls pointing at its answer panel. The panel opens by animating its grid row from 0fr to
+  1fr (like components/reason-card.html), standing in for Radix's height animation. Closed panels are
+  inert, so screen readers and the keyboard skip answers that aren't showing.
+
+  Kept from the original: the heading's words arrive one by one out of a blur (static/js/scroll-text.js,
+  as on the CTA heading), then the intro and each question rise in (static/js/reveal.js). Left out: the
+  support email link after the intro (the site has no support email yet), and the original's bigger
+  heading, so it matches the other home sections. The intro copy is fixed here, picked by the user.
+
+  Colours moved to the palette: questions deep-navy on white, about 14.8:1; answers and the intro
+  deep-navy at 80%, about 9.5:1; rules deep-navy at 10%. Answers keep the line breaks typed in admin.
+{% endcomment %}
+{% if faqs %}
+<section aria-labelledby="faq-title" x-data="reveal" class="bg-white px-8 py-20 sm:py-24">
+  <div class="mx-auto max-w-[90rem]">
+    <h2 id="faq-title" x-data="scrollText" class="text-center text-2xl font-bold tracking-tight text-deep-navy sm:text-3xl lg:text-4xl">
+      Frequently asked questions
+    </h2>
+    <p data-reveal class="mx-auto mt-5 max-w-2xl text-center text-lg leading-relaxed text-deep-navy/80 sm:text-xl">
+      Answers to the things people ask us most about our courses and how to join.
+    </p>
+
+    <ul x-data="{ open: null }" class="mx-auto mt-12 max-w-3xl sm:mt-14">
+      {% for faq in faqs %}
+        <li data-reveal class="border-b border-deep-navy/10">
+          <h3>
+            <button type="button" id="faq-button-{{ faq.pk }}" aria-controls="faq-panel-{{ faq.pk }}"
+                    aria-expanded="false" :aria-expanded="open === {{ forloop.counter0 }}"
+                    @click="open = open === {{ forloop.counter0 }} ? null : {{ forloop.counter0 }}"
+                    class="focus-ring group flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left font-medium text-deep-navy">
+              <span class="text-base leading-snug underline-offset-4 group-hover:underline sm:text-lg">{{ faq.question }}</span>
+              <svg class="size-4 shrink-0 transition-transform duration-200 motion-reduce:transition-none"
+                   :class="{ 'rotate-180': open === {{ forloop.counter0 }} }"
+                   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </button>
+          </h3>
+
+          <div id="faq-panel-{{ faq.pk }}" role="region" aria-labelledby="faq-button-{{ faq.pk }}" inert
+               class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
+               :class="{ 'grid-rows-[1fr]': open === {{ forloop.counter0 }}, 'grid-rows-[0fr]': open !== {{ forloop.counter0 }} }"
+               :inert="open !== {{ forloop.counter0 }}">
+            <div class="overflow-hidden">
+              <p class="pb-5 leading-relaxed text-deep-navy/80">{{ faq.answer|linebreaksbr }}</p>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}

@@ -1,0 +1,59 @@
+{% load static %}
+{% comment %}
+  "Why choose us", after the user's fifth inspo: heading, intro and an accordion of reasons
+  on the left, a photo on the right. Clicking a reason opens its description; one is always open,
+  starting with the first. The accordion item is components/reason-card.html. (Earlier layouts, a
+  photo beside deep-navy cards, reasons either side of a centred photo, and a 2×2 numbered grid,
+  were replaced by the user, who later also dropped the 01–04 numbers before each reason.)
+
+  The inspo's blue "Us?" is left out: vibrant-blue is kept for interactive things. The open reason's
+  bar is vibrant-blue; titles grow slightly on hover rather than changing colour.
+
+  Copy lives here on purpose, like the hero and What we do: fixed marketing copy, brainstormed from
+  the company mission and picked by the user (reasons 1–4, intro B). Change the wording here.
+
+  Layout:
+    - heading and intro centred above everything, like the other home sections
+    - phones and md: the photo, then the accordion (the photo comes first in the HTML too, so the
+      reading order matches)
+    - lg: the accordion left and the photo right, centred on each other. The photo has a fixed
+      shape rather than stretching to the accordion, so it doesn't resize as reasons open and close.
+
+  Photo (the user's pick, 2026-10-01): a hand in a blue sleeve pointing at code on a monitor, the other
+  hand on the keyboard. It's portrait (840×1200) but the frame is landscape, 4:3 on phones, 16:9 at sm
+  and md, 4:3 again from lg, so object-cover keeps a band of it, anchored 25% down: about 12–64% of the
+  height at 4:3 and 15–55% at 16:9. Both keep the pointing hand (about 27–47% down) and the code it
+  points at; the typing hand at the bottom is cropped out. Two WebP sizes: 700w for phones, 840w (the
+  original) for tablets and 2x screens. The ice-blue background shows while it loads.
+
+  Text is deep-navy on white (about 14.8:1, and the descriptions at 80% about 9.5:1).
+
+  Scrolling in, the heading, intro, photo and each reason blur-rise into view (static/js/reveal.js; the
+  reasons carry data-reveal in reason-card.html).
+{% endcomment %}
+<section aria-labelledby="why-choose-us-title" x-data="reveal" class="bg-white px-8 py-20 sm:py-24">
+  <div class="mx-auto max-w-[90rem]">
+    <h2 id="why-choose-us-title" data-reveal class="text-center text-2xl font-bold tracking-tight text-deep-navy sm:text-3xl lg:text-4xl">
+      Why choose us
+    </h2>
+    <p data-reveal class="mx-auto mt-5 max-w-2xl text-center text-lg leading-relaxed text-deep-navy/80 sm:text-xl">
+      We don't just teach tech. We build it, and we bring that experience into every class.
+    </p>
+
+    <div class="mt-12 grid gap-12 sm:mt-14 lg:grid-cols-2 lg:items-center lg:gap-16">
+      <img src="{% static 'images/why-choose-us-pointing-840.webp' %}"
+           srcset="{% static 'images/why-choose-us-pointing-700.webp' %} 700w, {% static 'images/why-choose-us-pointing-840.webp' %} 840w"
+           sizes="(min-width: 1024px) 50vw, 100vw"
+           width="840" height="1200" loading="lazy" decoding="async"
+           alt="A person in a blue sleeve points at a line of code on a monitor while typing on the keyboard"
+           data-reveal class="aspect-4/3 w-full rounded-2xl bg-ice-blue object-cover object-[center_25%] sm:aspect-video lg:col-start-2 lg:row-start-1 lg:aspect-4/3">
+
+      <ul x-data="{ open: 0 }" class="border-l-2 border-deep-navy/10 lg:col-start-1 lg:row-start-1">
+        {% include "components/reason-card.html" with index=0 title="Taught by builders" description="We build software for real businesses, so you learn from people who do the work every day, not just teach it." %}
+        {% include "components/reason-card.html" with index=1 title="Skills employers want" description="Our courses focus on practical, in-demand skills that open doors to jobs, freelancing and starting your own thing." %}
+        {% include "components/reason-card.html" with index=2 title="Mentorship, not just lessons" description="You get guidance and honest feedback from people who've been where you are, all the way through your course." %}
+        {% include "components/reason-card.html" with index=3 title="Learn by doing" description="You build real projects as you go, so you finish with work you can show, not just notes." %}
+      </ul>
+    </div>
+  </div>
+</section>

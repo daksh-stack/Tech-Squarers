@@ -1,0 +1,123 @@
+{% comment %}
+  Testimonials, ported from the user's React "ScrollReelTestimonials" component to Alpine
+  (static/js/testimonial-reel.js; the animation CSS is under "Testimonials reel" in input.css).
+  Testimonials come from admin in their admin order. The section is hidden until at least one exists,
+  and the buttons are hidden while there is only one.
+
+  The card: a reel of tiles on top and the quote below, side by side from lg (at md the quote
+  column beside the reel was only about 225px wide). Below sm the card reaches 1rem into the section's
+  side padding (-mx-4), the same width as the course cards on phones (343px at 375px wide). Prev/next or
+  the arrow keys (with the card focused) move one testimonial. The middle column holds the
+  portraits: 3 plain tiles, then each portrait with 2 plain tiles between portraits, then 3 more.
+  The outer columns are plain tiles in the same number, so they always cover the frame however many
+  testimonials there are. (The original gave them fewer, and they ran out past about four.)
+
+  Colours moved to the palette: the white card sits on the ice-blue section, the tiles fade ice-blue
+  to white. The portraits show in full colour: the original's greyscale layer and purple sheen
+  over them were removed by the user's choice, so the photos stay clear.
+
+  The reel is aria-hidden: the name under each quote already says who it is, and three portraits
+  read out at once would be noise, so the photos have no alt text. Quote text is deep-navy on white,
+  about 14.8:1; the optional role under the name is deep-navy at 70%, about 7.5:1. The intro under
+  the heading is deep-navy at 80% on ice-blue, about 6.9:1, styled like the Why choose us intro.
+
+  Scrolling in, the heading, the intro and then the card blur-rise into view (static/js/reveal.js).
+{% endcomment %}
+{% if testimonials %}
+<section aria-labelledby="testimonials-title" x-data="reveal" class="bg-ice-blue px-8 py-20 sm:py-24">
+  <div class="mx-auto max-w-[90rem]">
+    <h2 id="testimonials-title" data-reveal class="text-center text-2xl font-bold tracking-tight text-deep-navy sm:text-3xl lg:text-4xl">
+      Testimonials
+    </h2>
+    <p data-reveal class="mx-auto mt-5 max-w-2xl text-center text-lg leading-relaxed text-deep-navy/80 sm:text-xl">
+      Students and graduates share what learning with TechSquarers was really like.
+    </p>
+
+    <div x-data="testimonialReel({{ testimonials|length }})"
+         @keydown.right.prevent="go(1)" @keydown.left.prevent="go(-1)"
+         role="region" aria-roledescription="carousel" aria-label="Testimonials" tabindex="0" data-reveal
+         class="focus-ring -mx-4 mt-12 flex max-w-5xl flex-col overflow-hidden rounded-2xl bg-white shadow-sm sm:mx-auto sm:mt-14 lg:min-h-80 lg:flex-row">
+
+      {# Reel. The mask fades all four edges; the columns overflow it and are clipped. #}
+      <div aria-hidden="true"
+           class="relative h-56 shrink-0 overflow-hidden mask-x-from-86% mask-x-to-100% mask-y-from-90% mask-y-to-100% lg:h-auto lg:w-96">
+        <div class="absolute inset-0 flex items-center justify-center gap-2">
+          <div class="flex shrink-0 flex-col gap-2 will-change-transform"
+               :class="ready && 'transition-transform duration-800 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none'"
+               :style="`transform: translateY(${-offset}px)`">
+            {% for i in '123' %}{% include "components/reel-tile.html" %}{% endfor %}
+            {% for testimonial in testimonials %}
+              {% include "components/reel-tile.html" %}
+              {% if not forloop.last %}{% include "components/reel-tile.html" %}{% include "components/reel-tile.html" %}{% endif %}
+            {% endfor %}
+            {% for i in '123' %}{% include "components/reel-tile.html" %}{% endfor %}
+          </div>
+
+          <div x-ref="middle" class="flex shrink-0 flex-col gap-2 will-change-transform"
+               :class="ready && 'transition-transform duration-800 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none'"
+               :style="`transform: translateY(${offset}px)`">
+            {% for i in '123' %}{% include "components/reel-tile.html" %}{% endfor %}
+            {% for testimonial in testimonials %}
+              <div class="relative size-30 shrink-0 overflow-hidden rounded-xl bg-ice-blue shadow-lg">
+                <img src="{{ testimonial.photo.url }}" alt="" width="120" height="120" loading="lazy" decoding="async"
+                     class="absolute inset-0 size-full object-cover object-[center_30%]">              </div>
+              {% if not forloop.last %}{% include "components/reel-tile.html" %}{% include "components/reel-tile.html" %}{% endif %}
+            {% endfor %}
+            {% for i in '123' %}{% include "components/reel-tile.html" %}{% endfor %}
+          </div>
+
+          <div class="flex shrink-0 flex-col gap-2 will-change-transform"
+               :class="ready && 'transition-transform duration-800 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none'"
+               :style="`transform: translateY(${-offset}px)`">
+            {% for i in '123' %}{% include "components/reel-tile.html" %}{% endfor %}
+            {% for testimonial in testimonials %}
+              {% include "components/reel-tile.html" %}
+              {% if not forloop.last %}{% include "components/reel-tile.html" %}{% include "components/reel-tile.html" %}{% endif %}
+            {% endfor %}
+            {% for i in '123' %}{% include "components/reel-tile.html" %}{% endfor %}
+          </div>
+        </div>
+      </div>
+
+      {# Quote #}
+      <div class="flex min-w-0 flex-1 flex-col justify-between gap-8 px-6 py-8 sm:px-10 lg:py-10">
+        <div>
+          <svg class="size-12 text-deep-navy/20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4.58 17.32C3.55 16.23 3 15 3 13.01c0-3.5 2.46-6.64 6.03-8.19l.9 1.38c-3.34 1.8-4 4.15-4.25 5.62.54-.28 1.24-.38 1.93-.31 1.8.17 3.23 1.65 3.23 3.49a3.5 3.5 0 0 1-3.5 3.5c-1.07 0-2.1-.49-2.75-1.18zm10 0C13.55 16.23 13 15 13 13.01c0-3.5 2.46-6.64 6.03-8.19l.9 1.38c-3.34 1.8-4 4.15-4.25 5.62.54-.28 1.24-.38 1.93-.31 1.8.17 3.23 1.65 3.23 3.49a3.5 3.5 0 0 1-3.5 3.5c-1.07 0-2.1-.49-2.75-1.18z"/>
+          </svg>
+
+          {# Every slide sits in the same grid cell, so the area is as tall as the longest quote #}
+          <div class="mt-3 grid" aria-live="polite">
+            {% for testimonial in testimonials %}
+              <figure data-reel-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.counter }} of {{ testimonials|length }}"
+                      class="col-start-1 row-start-1 flex flex-col gap-5{% if not forloop.first %} invisible{% endif %}"
+                      :class="{ 'invisible': shown !== {{ forloop.counter0 }}, 'reel-exit': shown === {{ forloop.counter0 }} && exiting, 'reel-rising': shown === {{ forloop.counter0 }} && rising }">
+                <blockquote>
+                  <p data-reel-text class="text-lg leading-snug font-medium tracking-tight text-deep-navy lg:text-xl">{{ testimonial.quote }}</p>
+                </blockquote>
+                <figcaption class="text-sm">
+                  <span data-reel-text class="block font-semibold text-deep-navy">{{ testimonial.name }}</span>
+                  {% if testimonial.role %}<span data-reel-text class="mt-1 block text-deep-navy/70">{{ testimonial.role }}</span>{% endif %}
+                </figcaption>
+              </figure>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if testimonials|length > 1 %}
+          <div class="flex items-center gap-2">
+            <button type="button" @click="go(-1)" :disabled="index === 0" disabled aria-label="Previous testimonial"
+                    class="focus-ring grid size-11 place-items-center rounded-full border border-deep-navy/20 text-deep-navy transition-[background-color,opacity] hover:enabled:bg-ice-blue disabled:opacity-40">
+              <svg class="size-4" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 2.5 3.5 6l4 3.5"/></svg>
+            </button>
+            <button type="button" @click="go(1)" :disabled="index === {{ testimonials|length }} - 1" aria-label="Next testimonial"
+                    class="focus-ring grid size-11 place-items-center rounded-full border border-deep-navy/20 text-deep-navy transition-[background-color,opacity] hover:enabled:bg-ice-blue disabled:opacity-40">
+              <svg class="size-4" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 2.5 4 3.5-4 3.5"/></svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

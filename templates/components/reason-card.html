@@ -1,0 +1,43 @@
+{% comment %}
+  One reason in the "Why choose us" accordion (sections/home/why-choose-us.html), after the user's
+  fifth inspo: a title that opens the description below it when clicked. (The inspo's 01–04 numbers
+  before the titles were removed by the user.)
+
+  Built on the accordion pattern: the title is a button inside the h3, with aria-expanded and
+  aria-controls pointing at its panel. One reason is always open (the caller's `open`), so the open
+  one's button is aria-disabled rather than closing everything and leaving a gap by the photo.
+
+  The panel opens by animating its grid row from 0fr to 1fr, so it slides to its real height with
+  no JavaScript measuring and no extra Alpine plugin. Closed panels are inert, so screen readers
+  and the keyboard skip text that isn't showing. The first reason is rendered open by Django, so
+  the page looks the same before and after Alpine starts.
+
+  The open reason gets a vibrant-blue bar on the list's left rule. On hover (and keyboard focus) the
+  title grows slightly from its left edge instead of changing colour (the user's choice), so it stays
+  deep-navy and readable; reduced motion keeps the grow but drops the animation.
+
+  Usage (inside an element with x-data="{ open: 0 }"):
+    {% include "components/reason-card.html" with index=0 title="..." description="..." %}
+{% endcomment %}
+<li data-reveal class="relative">
+  <span class="absolute inset-y-0 -left-0.5 w-0.5 origin-top bg-vibrant-blue transition-transform duration-300 motion-reduce:transition-none{% if index != 0 %} scale-y-0{% endif %}"
+        :class="{ 'scale-y-0': open !== {{ index }} }" aria-hidden="true"></span>
+
+  <h3>
+    <button type="button" id="reason-button-{{ index }}" aria-controls="reason-panel-{{ index }}"
+            aria-expanded="{% if index == 0 %}true{% else %}false{% endif %}" :aria-expanded="open === {{ index }}"
+            {% if index == 0 %}aria-disabled="true" {% endif %}:aria-disabled="open === {{ index }}" @click="open = {{ index }}"
+            class="focus-ring group block w-full py-5 pl-6 text-left font-space-grotesk font-bold text-deep-navy">
+      <span class="block origin-left text-xl leading-tight transition-transform duration-300 group-hover:scale-[1.04] group-focus-visible:scale-[1.04] motion-reduce:transition-none lg:text-2xl">{{ title }}</span>
+    </button>
+  </h3>
+
+  <div id="reason-panel-{{ index }}" role="region" aria-labelledby="reason-button-{{ index }}"
+       class="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none {% if index == 0 %}grid-rows-[1fr]{% else %}grid-rows-[0fr]{% endif %}"
+       :class="{ 'grid-rows-[1fr]': open === {{ index }}, 'grid-rows-[0fr]': open !== {{ index }} }"
+       {% if index != 0 %}inert{% endif %} :inert="open !== {{ index }}">
+    <div class="overflow-hidden">
+      <p class="pr-4 pb-6 pl-6 leading-relaxed text-deep-navy/80">{{ description }}</p>
+    </div>
+  </div>
+</li>

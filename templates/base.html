@@ -1,0 +1,38 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" class="motion-safe:scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}TechSquarers{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}TechSquarers — tech education and software development.{% endblock %}">
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+  {# Compiled by `npm run dev` / `npm run build` from static/src/input.css #}
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  {# Vendored, version-pinned libraries (no CDN). `defer` runs them after the HTML is parsed; htmx first, then Alpine #}
+  <script src="{% static 'vendor/htmx-2.0.10.min.js' %}" defer></script>
+  {# Alpine components go before Alpine itself, so their alpine:init listeners exist when it starts #}
+  <script src="{% static 'js/nav-pill.js' %}" defer></script>
+  <script src="{% static 'js/typewriter.js' %}" defer></script>
+  <script src="{% static 'js/pinned-path.js' %}" defer></script>
+  <script src="{% static 'js/testimonial-reel.js' %}" defer></script>
+  <script src="{% static 'js/scroll-text.js' %}" defer></script>
+  <script src="{% static 'js/reveal.js' %}" defer></script>
+  <script src="{% static 'vendor/alpine-3.17.3.min.js' %}" defer></script>
+</head>
+{# Sends Django's CSRF token with every htmx request so POST/PUT/DELETE pass CsrfViewMiddleware #}
+<body class="bg-white text-deep-navy antialiased" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  {# Lets keyboard and screen-reader users jump past the navigation; visible only when focused #}
+  <a href="#main"
+     class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-vibrant-blue focus:px-4 focus:py-3 focus:text-white">
+    Skip to main content
+  </a>
+
+  {% include "partials/navbar.html" %}
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "partials/footer.html" %}
+</body>
+</html>

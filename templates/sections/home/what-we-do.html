@@ -1,0 +1,71 @@
+{% comment %}
+  "What we do" — the three pillars from the company mission, as cards pinned to a ruled page and
+  joined by a moving dashed line. Ported from a React component (how-it-works.tsx) to plain Django,
+  Tailwind and CSS; the card itself is components/pinned-card.html.
+
+  The copy lives here on purpose, not in admin — the user's call, as with the hero: it is fixed
+  marketing copy, taken word for word from the company mission (the promise line and the three
+  pillar descriptions). The heading and promise line are the section's existing write-up, kept
+  above the component.
+
+  Layout — a grid at every size:
+    - phones: one column, cards stacked and centred
+    - from md: every card spans two rows, each starting one row after the last — Training rows 1-2,
+      Mentoring rows 2-3, Building rows 3-4. Sharing a row is what staggers them. auto-rows-fr makes
+      every row the same height, so the step from 01 to 02 is exactly the step from 02 to 03. And
+      Training and Building never share a row, so they can never overlap however tall the text makes
+      them.
+    - md: two equal columns, cards centred in them
+    - from lg: one card per row, in rows of 330px | 330px | auto, so each card starts exactly 330px
+      below the last — the spacing the user set. Columns of 15% | 280px | the rest | 280px | 15% put
+      the cards where the React original had them horizontally: 280px wide, 15% in from each edge.
+  Tilt is 2° on phones and 4° from md (the original's 8° was cut by request), alternating.
+
+  The dashed line is drawn by static/js/pinned-path.js from wherever the cards actually are and
+  redrawn whenever the layout resizes: straight segments from card centre to card centre, which on
+  phones is a short straight drop between stacked cards. With no JavaScript it is simply empty; the
+  cards are unaffected.
+
+  .pinned-path (input.css) keeps the dashes flowing on both lines — continuous, like the hero
+  typewriter, so it misses WCAG 2.2.2 (Pause, Stop, Hide); reduced motion stops it.
+
+  Background: faint ruled lines every 32px, faded out toward both edges by white gradients so they
+  sit only behind the middle of the section, as in the original. Deep-navy rather than the
+  original's hardcoded black, since templates don't carry hex values.
+
+  Mentoring takes the dark panel and the other two the light one, keeping the original's
+  alternating colour within the brand palette. overflow-x-clip stops a tilted card's corner from
+  pushing the page sideways.
+
+  Scrolling in, the heading and promise line blur-rise into view (static/js/reveal.js). The cards and the
+  dashed line don't: the line reached the cards before they had risen in, which looked broken, so the user
+  had the diagram simply show.
+{% endcomment %}
+<section aria-labelledby="what-we-do-title" x-data="reveal" class="relative overflow-x-clip bg-white px-8 py-20 sm:py-24">
+  {# Ruled lines, then a white fade over each half so they only show toward the middle #}
+  <div aria-hidden="true"
+       class="pointer-events-none absolute inset-0 mt-1 bg-[linear-gradient(var(--color-deep-navy)_1px,transparent_1px)] bg-[length:100%_32px] opacity-[0.08]"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-linear-to-r from-white to-transparent"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-linear-to-l from-white to-transparent"></div>
+
+  <div class="relative z-10 mx-auto max-w-[90rem]">
+    <h2 id="what-we-do-title" data-reveal class="text-center text-2xl font-bold tracking-tight text-deep-navy sm:text-3xl lg:text-4xl">
+      What we do
+    </h2>
+    <p data-reveal class="mx-auto mt-5 max-w-2xl text-center text-lg leading-relaxed text-deep-navy/80 sm:text-xl">
+      To raise a generation of skilled, confident tech talent while helping the institutions and businesses we serve grow through dependable technology and services.
+    </p>
+
+    <div x-data="pinnedPath"
+         class="relative mx-auto mt-14 grid w-full max-w-[1000px] gap-y-10 sm:mt-16 md:grid-cols-2 md:auto-rows-fr md:gap-x-8 md:gap-y-6 lg:grid-cols-[15%_280px_1fr_280px_15%] lg:grid-rows-[200px_200px_auto] lg:gap-x-0 lg:gap-y-0">
+      <svg aria-hidden="true" class="pointer-events-none absolute inset-0 size-full text-deep-navy/25">
+        <path x-ref="path" class="pinned-path" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-dasharray="8 6" stroke-linecap="round"/>
+      </svg>
+
+      {% include "components/pinned-card.html" with number="01" title="Training" theme="light" rotate="rotate-2 md:rotate-4" position="md:col-start-1 md:row-[1/span_2] lg:col-start-2 lg:row-[1/span_1]" description="Equipping people with practical, in-demand technical skills that open doors to employment, entrepreneurship, and innovation." %}
+      {% include "components/pinned-card.html" with number="02" title="Mentoring" theme="dark" rotate="-rotate-2 md:-rotate-4" position="md:col-start-2 md:row-[2/span_2] lg:col-start-4 lg:row-[2/span_1]" description="Walking alongside learners and professionals with guidance, real-world insight, and support that turns knowledge into lasting competence and confidence." %}
+      {% include "components/pinned-card.html" with number="03" title="Building" theme="light" rotate="rotate-2 md:rotate-4" position="md:col-start-1 md:row-[3/span_2] lg:col-start-2 lg:row-[3/span_1]" description="Delivering reliable, high-quality tech solutions and products that solve real problems for the organisations and businesses we serve." %}
+    </div>
+  </div>
+</section>

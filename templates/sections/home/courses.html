@@ -1,0 +1,36 @@
+{% comment %}
+  "Explore our courses" — a preview of the first six courses by admin order, with a link to the full list on
+  the Services page. Hidden entirely until at least one course exists in admin.
+
+  Grid: one column on phones, two from md (3 rows of 2), three from lg — the 3×2 the user asked for.
+  On phones only the first three cards show; the rest hide below md so the section stays short, and
+  all six are still one tap away via "View all courses". The card itself is components/course-card.html.
+  Below sm the list reaches 1rem into the section's side padding (-mx-4), so the cards are wider
+  than the heading and intro (343px rather than 311px at 375px wide); from sm it's centred at max-w-sm.
+
+  Scrolling in, the heading, intro, each card and the link blur-rise into view (static/js/reveal.js).
+{% endcomment %}
+{% if courses %}
+<section aria-labelledby="courses-title" x-data="reveal" class="bg-ice-blue px-8 py-20 sm:py-24">
+  <div class="mx-auto max-w-[90rem]">
+    <h2 id="courses-title" data-reveal class="text-center text-2xl font-bold tracking-tight text-deep-navy sm:text-3xl lg:text-4xl">
+      Explore our courses
+    </h2>
+    {# Section intro, kept in the template like the hero and What we do copy (fixed marketing copy, not admin content) #}
+    <p data-reveal class="mx-auto mt-5 max-w-2xl text-center text-lg leading-relaxed text-deep-navy/80 sm:text-xl">
+      Practical, mentor-led courses that take you from beginner to job-ready, and open doors to employment, entrepreneurship and innovation.
+    </p>
+
+    <ul class="-mx-4 mt-12 grid gap-6 sm:mx-auto sm:mt-14 sm:max-w-sm md:max-w-none md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+      {% for course in courses %}
+        <li data-reveal{% if forloop.counter > 3 %} class="max-md:hidden"{% endif %}>{% include "components/course-card.html" with course=course %}</li>
+      {% endfor %}
+    </ul>
+
+    <div data-reveal class="mt-12 flex justify-center">
+      {% url 'core:services' as services_url %}
+      {% include "components/link-button.html" with label="View all courses" url=services_url %}
+    </div>
+  </div>
+</section>
+{% endif %}

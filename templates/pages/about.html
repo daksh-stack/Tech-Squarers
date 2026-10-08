@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% url 'core:contact' as contact_url %}
+
+{% block content %}
+
+
+<div class="text-deep-navy">
+
+  {% include "sections/about/heroAbout.html" %}
+  {% include "sections/about/story.html" %}
+  {% include "sections/about/believe.html" %}
+  {% include "sections/about/diffrence.html" %}
+  {% include "sections/about/target.html" %}
+  {% include "sections/about/cta.html" %}
+</div>
+
+{% endblock %}

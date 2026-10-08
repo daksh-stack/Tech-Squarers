@@ -1,0 +1,53 @@
+{% load static %}
+{% comment %}
+  A course card for the home "Our courses" grid, after the user's inspo (a course dashboard card): a
+  white card with the photo inset at the top, then the title and the duration with a clock icon.
+  The inspo's date badge, level, students and price are left out by the user's choice.
+
+  Usage: {% include "components/course-card.html" with course=course %}
+
+  Photo: the admin upload, cropped to a fixed shape so every card lines up whatever size was
+  uploaded: 3:2 on phones, where the cards are wider (see courses.html), so they stay the height
+  they were at 4:3, then 4:3 from sm. With no
+  photo yet, an ice-blue panel with the logo mark stands in; it is decorative, so screen readers skip
+  it (the title already names the course). The duration row is hidden when admin leaves it empty.
+
+  Card foot (mt-auto, so it lines up across a row however tall the titles are): one Learn more
+  button, components/arrow-fill-button.html (the same button as "Join our community" in the navbar),
+  opening the course page (/services/<slug>/). It replaced an Enroll Now (WhatsApp) button and a View
+  details link, by the user's choice; enrolling will live on the course page. The label repeats on
+  every card, so its aria-label starts with the visible words (for voice users) and adds the course
+  name.
+
+  Contrast on white: title deep-navy 14.77:1; duration deep-navy/70 about 6.6:1.
+{% endcomment %}
+<article class="flex h-full flex-col rounded-2xl border border-deep-navy/10 bg-white p-3 shadow-lg shadow-black/5 lg:rounded-[1.75rem] lg:p-4">
+  {% if course.photo %}
+    <img src="{{ course.photo.url }}" alt="{{ course.photo_alt }}" loading="lazy" decoding="async"
+         class="aspect-3/2 w-full rounded-xl object-cover sm:aspect-4/3">
+  {% else %}
+    <div aria-hidden="true" class="flex aspect-3/2 w-full items-center justify-center rounded-xl bg-ice-blue sm:aspect-4/3">
+      <img src="{% static 'images/logo-mark.svg' %}" alt="" class="size-16 opacity-40">
+    </div>
+  {% endif %}
+
+  <div class="flex flex-1 flex-col px-1 pt-4 pb-1 lg:px-2 lg:pt-5">
+    <h3 class="font-space-grotesk text-lg leading-tight font-bold text-deep-navy lg:text-xl">{{ course.name }}</h3>
+
+    {% if course.duration %}
+      <p class="mt-2 flex items-center gap-1.5 text-sm text-deep-navy/70">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             aria-hidden="true" focusable="false" class="size-4 shrink-0">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+        </svg>
+        <span><span class="sr-only">Duration: </span>{{ course.duration }}</span>
+      </p>
+    {% endif %}
+
+    <div class="mt-auto pt-5">
+      {% with aria="Learn more: "|add:course.name %}
+        {% include "components/arrow-fill-button.html" with label="Learn more" url=course.get_absolute_url aria_label=aria %}
+      {% endwith %}
+    </div>
+  </div>
+</article>

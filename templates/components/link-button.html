@@ -1,0 +1,31 @@
+{% comment %}
+  Text link with an arrow. On hover (and keyboard focus) the colour shifts, an underline wipes in from the left,
+  and the arrow tilts up 45°. Touch screens have no hover, so there the underline is always shown to mark it as a link.
+  Ported from the Hyperiux Vault link-button (React + lucide). The React version swaps its label and
+  tracks taps in JS for touch screens; here CSS covers that, so there is no script. Sizes are rem
+  instead of vw so the text follows the user's font size and zoom.
+
+  Colours:
+    default           vibrant-blue, deep-navy on hover — for light backgrounds. Vibrant-blue needs a near-white
+                      background at this weight: on the pale ice-blue tones it drops just under 4.5:1.
+    dark              white (ice-blue on hover, white focus ring) — for dark backgrounds, like the home hero.
+                      Vibrant-blue on deep-navy is only ~2.7:1, so it can't be used there.
+  Knobs, set on the root element:
+    --underline-height  thickness of the underline
+    --link-duration     length of the underline and arrow animations
+
+  Usage: {% include "components/link-button.html" with label="Explore courses" url=some_url %}
+         {% include "components/link-button.html" with label="Explore courses" url=some_url dark=True %}
+  `aria_label` optional; use it when the visible label is vague on its own, e.g. repeated on every card
+  (start it with the visible words so voice users can say what they see).
+  `small` optional; text-sm with a smaller arrow, for tighter spots like the course-card foot (default is text-xl).
+{% endcomment %}
+<a href="{{ url }}"{% if aria_label %} aria-label="{{ aria_label }}"{% endif %}
+   style="--underline-height: 2px; --link-duration: 500ms"
+   class="focus-ring group inline-flex w-fit items-center gap-2 rounded-sm font-normal transition-colors duration-300 motion-reduce:transition-none {% if small %}text-sm{% else %}text-xl{% endif %} {% if dark %}text-white hover:text-ice-blue focus-visible:text-ice-blue focus-visible:outline-white{% else %}text-vibrant-blue hover:text-deep-navy focus-visible:text-deep-navy{% endif %}">
+  <span class="relative after:absolute after:inset-x-0 after:-bottom-0.5 after:h-(--underline-height) after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-(--link-duration) after:ease-[cubic-bezier(0.62,0.05,0.01,0.99)] after:content-[''] group-hover:after:origin-left group-hover:after:scale-x-100 group-focus-visible:after:origin-left group-focus-visible:after:scale-x-100 motion-reduce:after:transition-none [@media(hover:none)]:after:scale-x-100">{{ label }}</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"
+       class="{% if small %}size-4{% else %}size-5{% endif %} transition-transform duration-(--link-duration) group-hover:-rotate-45 group-focus-visible:-rotate-45 motion-reduce:transition-none">
+    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+  </svg>
+</a>

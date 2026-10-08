@@ -1,0 +1,51 @@
+{% comment %}
+  Pill button with a white circle at its right end. On hover the circle expands to fill the pill,
+  a second copy of the label is revealed in vibrant blue behind the same expanding clip, and the arrow
+  swaps: the resting one slides right and shrinks while a new one slides in from the left.
+  Ported from the 21st.dev arrow-fill-button (React + lucide).
+
+  `isolate` matters: the layers below are stacked with z-10 to z-40, and a plain `relative` root does
+  not contain them. Without it they land in the page's root stacking context, where z-40 ties with the
+  sticky navbar and wins on document order, so the white arrow circle painted over the bar on scroll.
+
+  The original sizes everything in vw for a full-screen hero. Here the sizes are fixed, so the button
+  keeps its shape inside the navbar. Two knobs, both set on the root element:
+    --icon-circle  diameter of the circle
+    --icon-right   gap between the circle and the pill's edge
+
+  Usage: {% include "components/arrow-fill-button.html" with label="Join our community" url=site.community_url %}
+  `url` is optional while the link has no home; without it the button renders as plain text, not a link.
+  `aria_label` optional; use it when the visible label is vague on its own, e.g. repeated on every card
+  (start it with the visible words so voice users can say what they see). `new_tab` optional; opens in a
+  new tab with rel="noopener".
+{% endcomment %}
+<a {% if url %}href="{{ url }}"{% endif %}{% if new_tab %} target="_blank" rel="noopener"{% endif %}{% if aria_label %} aria-label="{{ aria_label }}"{% endif %}
+   style="--icon-circle: 2.25rem; --icon-right: 0.25rem; --circle-inset-y: calc((100% - var(--icon-circle)) / 2)"
+   class="focus-ring group relative isolate inline-flex h-11 w-fit items-center justify-center overflow-hidden rounded-full border border-vibrant-blue bg-vibrant-blue ps-5 pe-[calc(var(--icon-circle)+var(--icon-right)+1.25rem)] text-sm font-normal whitespace-nowrap text-white">
+  <span class="relative z-10">{{ label }}</span>
+
+  {# The fill. It starts as the circle's footprint and grows to the whole pill #}
+  <span aria-hidden="true"
+        class="pointer-events-none absolute z-20 rounded-full bg-spring-green inset-[var(--circle-inset-y)_var(--icon-right)_var(--circle-inset-y)_calc(100%-var(--icon-right)-var(--icon-circle))] transition-all duration-[450ms] ease-[cubic-bezier(0.785,0.135,0.15,0.86)] group-hover:inset-0 motion-reduce:transition-none"></span>
+
+  {# Same label in vibrant blue, clipped to the fill so it appears exactly as the white sweeps over #}
+  <span aria-hidden="true"
+        class="pointer-events-none absolute inset-0 z-30 flex items-center ps-5 pe-[calc(var(--icon-circle)+var(--icon-right)+1.25rem)] text-deep-navy [clip-path:inset(var(--circle-inset-y)_var(--icon-right)_var(--circle-inset-y)_calc(100%-var(--icon-right)-var(--icon-circle)))] transition-all duration-[450ms] ease-[cubic-bezier(0.785,0.135,0.15,0.86)] group-hover:[clip-path:inset(0_0_0_0)] motion-reduce:transition-none">
+    <span class="whitespace-nowrap">{{ label }}</span>
+  </span>
+
+  {# The circle itself, always white, holding the two arrows #}
+  <span aria-hidden="true"
+        class="pointer-events-none absolute top-1/2 right-[var(--icon-right)] z-40 inline-flex size-[var(--icon-circle)] shrink-0 -translate-y-1/2 items-center justify-center overflow-hidden rounded-full bg-spring-green text-deep-navy">
+    {# incoming arrow: waits off to the left, then slides to the middle #}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"
+         class="absolute top-1/2 left-1/2 size-4 origin-center -translate-y-1/2 translate-x-[-170%] scale-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.785,0.135,0.15,0.86)] group-hover:-translate-x-1/2 group-hover:scale-100 motion-reduce:transition-none">
+      <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+    </svg>
+    {# resting arrow: leaves to the right #}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"
+         class="absolute top-1/2 left-1/2 size-4 origin-center -translate-x-1/2 -translate-y-1/2 transition-transform duration-[450ms] ease-[cubic-bezier(0.785,0.135,0.15,0.86)] group-hover:translate-x-[70%] group-hover:scale-0 motion-reduce:transition-none">
+      <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+    </svg>
+  </span>
+</a>

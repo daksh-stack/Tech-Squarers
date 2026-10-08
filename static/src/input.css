@@ -1,0 +1,306 @@
+@import "tailwindcss";
+
+/* Scan Django templates for class names (explicit so detection never depends on where the CLI runs) */
+@source "../../templates";
+
+/*
+ * Self-hosted brand fonts (latin subset, woff2), vendored like Alpine/htmx — no CDN request.
+ * Space Grotesk = headings; Inter = body and UI. Files in static/fonts/; url() paths are relative
+ * to the compiled static/css/output.css. font-display: swap shows fallback text until the font loads.
+ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/inter-latin-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/inter-latin-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/inter-latin-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-latin-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-latin-700.woff2") format("woff2");
+}
+
+/*
+ * TechSquarers brand palette.
+ * The default Tailwind colours are cleared so only palette colours can be used —
+ * e.g. bg-vibrant-blue, text-deep-navy, border-ice-blue.
+ */
+@theme {
+  --color-*: initial;
+
+  /* Core brand palette (roles per the brand colour sheet) */
+  --color-deep-navy: #0d284b;    /* Foundation, headers, primary type; dark stop of bg-midnight-surge */
+  --color-vibrant-blue: #0056ff; /* Key CTAs, active/focus, links; base of bg-futurewave, bright stop of bg-midnight-surge */
+  --color-ice-blue: #e3e7fc;     /* Secondary backgrounds, feature cards, muted UI */
+  --color-white: #ffffff;        /* Primary canvas, whitespace */
+  --color-black: #000000;        /* Black */
+
+  /* Brand accents and action palette (the user's picks) — both are light, so they need a dark background or
+     dark text on them. They also mark dynamic states: green for success / htmx swap complete, orange for
+     warnings / destructive actions. */
+  --color-spring-green: #13f8c0;   /* Hero rotating word, button arrow circle; success states */
+  --color-sunrise-orange: #fdba74; /* Warnings, destructive actions, alternative CTAs */
+
+  /* Typography — self-hosted fonts (see @font-face above) */
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-space-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter); /* Inter is the default body/UI font */
+
+  /*
+   * Motion — the home page entrance (see templates/sections/home/hero.html for the order).
+   * Usage: class="motion-safe:animate-rise-in" or "motion-safe:animate-fade-in", plus style="animation-delay: …"
+   * to stagger. `both` keeps an element hidden until its delay is up.
+   */
+  --animate-rise-in: rise-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 900ms ease-out both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+}
+
+/*
+ * Brand gradients, built only from palette colours (official stop values not available).
+ * Usage: class="bg-futurewave" / class="bg-midnight-surge"
+ */
+@utility bg-futurewave {
+  background-image: linear-gradient(
+    to top right,
+    var(--color-vibrant-blue),
+    color-mix(in oklab, var(--color-vibrant-blue) 45%, var(--color-white))
+  );
+}
+
+/* Keyboard focus ring for links and buttons. Usage: class="focus-ring" */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--color-vibrant-blue);
+    outline-offset: 2px;
+  }
+}
+
+/* Hides Alpine-controlled elements (x-show) until Alpine has started, so they don't flash on load */
+[x-cloak] {
+  display: none !important;
+}
+
+/*
+ * The dashed line joining the What we do cards (templates/sections/home/what-we-do.html): the dashes
+ * keep flowing along it, as in the React component it was ported from, which drove this with Motion.
+ *
+ * The dash pattern is 8 on, 6 off — a 14-unit repeat — so an offset of -140 is exactly ten repeats
+ * and the loop has no visible jump. The line is always drawn; only the flow depends on the animation,
+ * so it can never leave the line missing.
+ *
+ * Continuous motion, so this does not meet WCAG 2.2.2 (Pause, Stop, Hide) — the same known limitation
+ * as the hero typewriter. Reduced motion stops the flow and leaves a still dashed line.
+ */
+@keyframes pinned-path-flow {
+  to {
+    stroke-dashoffset: -140;
+  }
+}
+
+.pinned-path {
+  animation: pinned-path-flow 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pinned-path {
+    animation: none;
+  }
+}
+
+/*
+ * Testimonials reel (templates/sections/home/testimonials.html, static/js/testimonial-reel.js).
+ *
+ * When the quote changes, the old slide gets .reel-exit and lifts away, then the new slide gets
+ * .reel-rising and its characters rise in one after another (each has its own animation-delay).
+ * Removing .reel-rising and adding it again restarts the rise. The first quote on page load has
+ * neither class, so it simply shows. Reduced motion swaps instantly.
+ */
+.reel-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.reel-char {
+  display: inline-block;
+}
+
+@keyframes reel-char-rise {
+  from {
+    opacity: 0;
+    translate: 0 0.4em;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes reel-exit {
+  to {
+    opacity: 0;
+    translate: 0 -12px;
+  }
+}
+
+.reel-rising .reel-char {
+  animation: reel-char-rise 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.reel-exit {
+  animation: reel-exit 240ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/*
+ * Scroll text reveal (static/js/scroll-text.js). The script wraps each word in a .scroll-text-piece
+ * with its position in --i, and sets data-scroll-text="hidden" until the text comes into view. The
+ * words then rise out of a blur one after another, 90ms apart, after --scroll-text-delay.
+ *
+ * Text is only hidden once the script has split it, and the script leaves it alone for reduced-motion
+ * visitors. The one exception is data-scroll-text-cloak (the hero headline, on screen at load): it
+ * hides the text until the script removes the attribute, so the finished headline can't flash first.
+ * If the script never runs, the text appears after 2s anyway.
+ */
+.scroll-text-piece {
+  display: inline-block;
+}
+
+/* Only the reveal is animated: an element that was already showing (the typewriter word) must hide at once */
+[data-scroll-text='shown'] .scroll-text-piece {
+  transition-property: opacity, filter, translate;
+  transition-duration: 700ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--scroll-text-delay) + var(--i) * 90ms);
+}
+
+[data-scroll-text='hidden'] .scroll-text-piece {
+  opacity: 0;
+  filter: blur(10px);
+  translate: 0 0.5em;
+}
+
+@keyframes scroll-text-cloak {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-scroll-text-cloak] {
+    animation: scroll-text-cloak 0s 2s both;
+  }
+}
+
+/*
+ * Blur-rise reveal for sections (static/js/reveal.js): the same rise out of a blur as the hero headline,
+ * for whole blocks. The script sets data-reveal="hidden" on each element, then "shown" as it comes into
+ * view, with --reveal-delay staggering elements that arrive together. Only the reveal is animated.
+ */
+[data-reveal='hidden'] {
+  opacity: 0;
+  filter: blur(6px);
+  translate: 0 1.5rem;
+}
+
+[data-reveal='shown'] {
+  transition-property: opacity, filter, translate;
+  transition-duration: 800ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-rising .reel-char,
+  .reel-exit {
+    animation: none;
+  }
+}
+
+@layer base {
+  /* Inter drives body and UI text; Space Grotesk is reserved for headings (brand typography system) */
+  body {
+    font-family: var(--font-inter);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-space-grotesk);
+  }
+}
+
+@layer components {
+  /*
+   * Desktop link inside the sliding-pill nav. The link itself is transparent: the vibrant-blue pill
+   * behind it does the highlighting, and the link only swaps its text to white while the pill is under it.
+   * .is-current paints the highlight on the link directly, for the moment before Alpine has placed the pill.
+   */
+  .nav-link {
+    @apply relative flex h-full items-center rounded-full px-4 text-sm font-normal text-deep-navy transition-colors duration-300 motion-reduce:transition-none;
+  }
+
+  .nav-link.is-current {
+    @apply bg-vibrant-blue text-white;
+  }
+
+  /* Full-width row in the mobile menu; tall enough for a comfortable tap target */
+  .mobile-nav-link {
+    @apply flex min-h-14 items-center rounded-xl px-3 text-base font-normal text-deep-navy transition-colors hover:bg-ice-blue aria-[current=page]:text-vibrant-blue;
+  }
+
+  /* Footer column link (templates/partials/footer.html); 40px rows keep the lists easy to tap; the padding spaces out course names that wrap on phones */
+  .footer-link {
+    @apply inline-flex min-h-10 items-center rounded-sm py-1.5 text-base leading-snug font-medium text-deep-navy transition-colors hover:text-vibrant-blue;
+  }
+}
+
+@utility bg-midnight-surge {
+  background-image: linear-gradient(
+    to bottom right,
+    var(--color-deep-navy),
+    var(--color-vibrant-blue)
+  );
+}
