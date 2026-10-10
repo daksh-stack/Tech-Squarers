@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
@@ -45,12 +46,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Cloud media storage
+    'cloudinary_storage',
+    'cloudinary',
     # Project apps
     'core',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise must come directly after SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,13 +89,30 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
+#
+# In production set DATABASE_URL to a PostgreSQL connection string, e.g.:
+#   postgres://user:password@host:5432/dbname
+# Locally, falls back to SQLite so no setup is needed.
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+_database_url = os.environ.get('DATABASE_URL')
+if _database_url:
+    DATABASES = {'default': dj_database_url.parse(_database_url, conn_max_age=600)}
+else:
+            # Determine SQLite database location.
+        # Vercel's filesystem is read‑only except for /tmp, which is writable during a request.
+        # Use /tmp/db.sqlite3 when running on Vercel, otherwise fall back to the project root.
+        if os.getenv('VERCEL'):
+            # Vercel provides a temporary directory for writeable files.
+            _db_path = '/tmp/db.sqlite3'
+        else:
+            _db_path = os.environ.get('DB_PATH')
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': Path(_db_path) if isinstance(_db_path, str) else BASE_DIR / 'db.sqlite3',
+            }
+        }
+
 
 
 # Password validation
@@ -134,9 +157,23 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Where `collectstatic` gathers files for deployment (gitignored)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Uploads from the admin, such as course photos (gitignored)
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# WhiteNoise: compress and cache static files efficiently
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media uploads — use Cloudinary in production (set CLOUDINARY_URL env var),
+# fall back to local filesystem for development.
+if os.environ.get('CLOUDINARY_URL'):
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    MEDIA_URL = '/media/'
+else:
+    MEDIA_URL = 'media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
+
+# Trust the production domain for CSRF (required for forms on the live site)
+CSRF_TRUSTED_ORIGINS = [
+    'https://techsquarers.com',
+    'https://www.techsquarers.com',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/6.1/ref/settings/#default-auto-field
