@@ -20,5 +20,13 @@ if os.getenv('RUN_MIGRATIONS', 'true').lower() == 'true':
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
+# Run migrations on cold start after settings are configured
+if os.getenv('RUN_MIGRATIONS', 'true').lower() == 'true':
+    try:
+        from django.core import management
+        management.call_command('migrate', '--noinput')
+    except Exception:  # pragma: no cover
+        pass
+
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
